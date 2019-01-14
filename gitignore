@@ -1,7 +1,7 @@
 DE settings #
 ###################
 *.iml
-.idea
+.idea/vcs.xml
 
 # Compiled source #
 ###################
