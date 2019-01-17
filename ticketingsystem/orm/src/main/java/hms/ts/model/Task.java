@@ -1,24 +1,43 @@
 package hms.ts.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="task")
-public class Task {
-
-    private int id;
-    private Project project;
-    private String title;
-    private String description;
-    private Employee employee;
-    private int assignedHours;
-    private int spentHours;
-    private int status;
-    private String comment;
+public class Task implements Serializable {
 
     @Id
-    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;
+
+    @ManyToOne(targetEntity = Project.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name="project_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Project project;
+
+    @Column(name="title")
+    private String title;
+
+    @Column(name="description")
+    private String description;
+
+    @ManyToOne(targetEntity = Employee.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name="employee_id", referencedColumnName = "id", insertable =  false, updatable = false)
+    private Employee employee;
+
+    @Column(name="assigned_hours")
+    private int assignedHours;
+
+    @Column(name="spent_hours")
+    private int spentHours;
+
+    @Column(name="status")
+    private int status;
+
+    @Column(name="comment")
+    private String comment;
+
     public int getId() {
         return id;
     }
@@ -27,8 +46,6 @@ public class Task {
         this.id = id;
     }
 
-    @ManyToOne(targetEntity = Project.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="project_id")
     public Project getProject() {
         return project;
     }
@@ -37,7 +54,6 @@ public class Task {
         this.project = project;
     }
 
-    @Column(name="title")
     public String getTitle() {
         return title;
     }
@@ -46,7 +62,6 @@ public class Task {
         this.title = title;
     }
 
-    @Column(name="description")
     public String getDescription() {
         return description;
     }
@@ -55,8 +70,6 @@ public class Task {
         this.description = description;
     }
 
-    @ManyToOne(targetEntity = Employee.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="employee_id")
     public Employee getEmployee() {
         return employee;
     }
@@ -65,7 +78,6 @@ public class Task {
         this.employee = employee;
     }
 
-    @Column(name="assigned_hours")
     public int getAssignedHours() {
         return assignedHours;
     }
@@ -74,7 +86,6 @@ public class Task {
         this.assignedHours = assignedHours;
     }
 
-    @Column(name="spent_hours")
     public int getSpentHours() {
         return spentHours;
     }
@@ -83,7 +94,6 @@ public class Task {
         this.spentHours = spentHours;
     }
 
-    @Column(name="status")
     public int getStatus() {
         return status;
     }
@@ -92,7 +102,6 @@ public class Task {
         this.status = status;
     }
 
-    @Column(name="comment")
     public String getComment() {
         return comment;
     }

@@ -1,17 +1,20 @@
 package hms.ts.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name="employee")
-public class Role {
-
-    private int id;
-    private String title;
+@Table(name="role")
+public class Role implements Serializable {
 
     @Id
-    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;
+
+    @Column(name="title")
+    private String title;
+
     public int getId() {
         return id;
     }
@@ -20,7 +23,6 @@ public class Role {
         this.id = id;
     }
 
-    @Column(name="title")
     public String getTitle() {
         return title;
     }

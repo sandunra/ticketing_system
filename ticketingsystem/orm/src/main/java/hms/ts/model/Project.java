@@ -1,20 +1,29 @@
 package hms.ts.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="project")
-public class Project {
-
-    private int id;
-    private String title;
-    private String description;
-    private String type;
-    private String client;
+public class Project implements Serializable {
 
     @Id
-    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;
+
+    @Column(name="title")
+    private String title;
+
+    @Column(name="description")
+    private String description;
+
+    @Column(name="type")
+    private String type;
+
+    @Column(name="client")
+    private String client;
+
     public int getId() {
         return id;
     }
@@ -23,7 +32,6 @@ public class Project {
         this.id = id;
     }
 
-    @Column(name="title")
     public String getTitle() {
         return title;
     }
@@ -32,7 +40,6 @@ public class Project {
         this.title = title;
     }
 
-    @Column(name="description")
     public String getDescription() {
         return description;
     }
@@ -41,7 +48,6 @@ public class Project {
         this.description = description;
     }
 
-    @Column(name="type")
     public String getType() {
         return type;
     }
@@ -50,7 +56,6 @@ public class Project {
         this.type = type;
     }
 
-    @Column(name="client")
     public String getClient() {
         return client;
     }

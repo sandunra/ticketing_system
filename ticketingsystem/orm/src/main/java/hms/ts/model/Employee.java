@@ -1,21 +1,33 @@
 package hms.ts.model;
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
 @Table(name="employee")
-public class Employee {
-
-    private int id;
-    private Role role;
-    private String name;
-    private String username;
-    private String password;
-    private String email;
+public class Employee implements Serializable{
 
     @Id
-    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private int id;
+
+    @ManyToOne(targetEntity = Role.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+    @JoinColumn(name="role_id", referencedColumnName = "id", insertable =  false, updatable = false)
+    private Role role;
+
+    @Column(name="name")
+    private String name;
+
+    @Column(name="username")
+    private String username;
+
+    @Column(name="password")
+    private String password;
+
+    @Column(name="email")
+    private String email;
+
     public int getId() {
         return id;
     }
@@ -24,8 +36,6 @@ public class Employee {
         this.id = id;
     }
 
-    @ManyToOne(targetEntity = Role.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="role_id")
     public Role getRole() {
         return role;
     }
@@ -34,7 +44,6 @@ public class Employee {
         this.role = role;
     }
 
-    @Column(name="name")
     public String getName() {
         return name;
     }
@@ -43,7 +52,6 @@ public class Employee {
         this.name = name;
     }
 
-    @Column(name="username")
     public String getUsername() {
         return username;
     }
@@ -52,7 +60,6 @@ public class Employee {
         this.username = username;
     }
 
-    @Column(name="password")
     public String getPassword() {
         return password;
     }
@@ -61,7 +68,6 @@ public class Employee {
         this.password = password;
     }
 
-    @Column(name="email")
     public String getEmail() {
         return email;
     }
