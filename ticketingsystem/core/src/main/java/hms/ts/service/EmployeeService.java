@@ -1,7 +1,6 @@
 package hms.ts.service;
 
 import hms.ts.model.Employee;
-
 import java.util.List;
 
 public interface EmployeeService {
@@ -12,12 +11,12 @@ public interface EmployeeService {
 	
 	void updateEmployee(Employee employee);
 	
-	void deleteEmployeeBySsn(String ssn);
+	void deleteEmployeeById(int id);
 
 	List<Employee> findAllEmployees(); 
-	
-	Employee findEmployeeBySsn(String ssn);
 
-	boolean isEmployeeSsnUnique(Integer id, String ssn);
+	Employee findEmployeeById(int id);
+
+	boolean isEmployeeIdUnique(Integer id);
 	
 }

@@ -70,4 +70,5 @@
     <bean id="authenticateServiceBean" class="hms.ts.service.AuthService">
         <property name="hibernateTemplate" ref="hibernateTemplateBean" />
     </bean>
+
 </beans>

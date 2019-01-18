@@ -4,7 +4,7 @@ import hms.ts.model.Employee;
 
 import java.util.List;
 
-public interface EmployeeDao {
+public interface ProjectDao {
 
 	Employee findById(int id);
 

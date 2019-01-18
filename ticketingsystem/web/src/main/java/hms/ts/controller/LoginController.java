@@ -11,12 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/user")
-public class LoginCtrl {
+public class LoginController {
 
 	@Autowired
 	private AuthService authenticateService;			// This will auto-inject the authentication service into the controller.
 
-	private static Logger log = Logger.getLogger(LoginCtrl.class);
+	private static Logger log = Logger.getLogger(LoginController.class);
 
 	// Checks if the user credentials are valid or not.
 	@RequestMapping(value = "/validate", method = RequestMethod.POST)

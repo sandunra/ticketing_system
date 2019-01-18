@@ -38,20 +38,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 	}
 
-	public void deleteEmployeeBySsn(String ssn) {
-		dao.deleteEmployeeBySsn(ssn);
+	public void deleteEmployeeById(int id) {
+		dao.deleteEmployeeById(id);
 	}
 	
 	public List<Employee> findAllEmployees() {
 		return dao.findAllEmployees();
 	}
 
-	public Employee findEmployeeBySsn(String ssn) {
-		return dao.findEmployeeBySsn(ssn);
+	public Employee findEmployeeById(int id) {
+		return dao.findEmployeeById(id);
 	}
 
-	public boolean isEmployeeSsnUnique(Integer id, String ssn) {
-		Employee employee = findEmployeeBySsn(ssn);
+	public boolean isEmployeeIdUnique(Integer id) {
+		Employee employee = findEmployeeById(id);
 		return ( employee == null || ((id != null) && (employee.getId() == id)));
 	}
 	

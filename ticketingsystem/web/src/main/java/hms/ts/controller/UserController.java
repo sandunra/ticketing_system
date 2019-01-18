@@ -21,7 +21,7 @@ import java.util.Locale;
 public class UserController {
 
 	@Autowired
-	EmployeeService service;
+	EmployeeService employeeService;
 	
 	@Autowired
 	MessageSource messageSource;
@@ -32,7 +32,7 @@ public class UserController {
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String listEmployees(ModelMap model) {
 
-		List<Employee> employees = service.findAllEmployees();
+		List<Employee> employees = employeeService.findAllEmployees();
 		model.addAttribute("employees", employees);
 		return "allemployees";
 	}
@@ -68,13 +68,13 @@ public class UserController {
 		 * framework as well while still using internationalized messages.
 		 * 
 		 */
-		if(!service.isEmployeeSsnUnique(employee.getId(), employee.getSsn())){
-			FieldError ssnError =new FieldError("employee","ssn",messageSource.getMessage("non.unique.ssn", new String[]{employee.getSsn()}, Locale.getDefault()));
+		if(!employeeService.isEmployeeIdUnique(employee.getId())){
+			FieldError ssnError =new FieldError("employee","id",messageSource.getMessage("non.unique.id", new Integer[]{employee.getId()}, Locale.getDefault()));
 		    result.addError(ssnError);
 			return "registration";
 		}
 		
-		service.saveEmployee(employee);
+		employeeService.saveEmployee(employee);
 
 		model.addAttribute("success", "Employee " + employee.getName() + " registered successfully");
 		return "success";
@@ -84,9 +84,9 @@ public class UserController {
 	/*
 	 * This method will provide the medium to update an existing employee.
 	 */
-	@RequestMapping(value = { "/edit-{ssn}-employee" }, method = RequestMethod.GET)
-	public String editEmployee(@PathVariable String ssn, ModelMap model) {
-		Employee employee = service.findEmployeeBySsn(ssn);
+	@RequestMapping(value = { "/edit-{id}-employee" }, method = RequestMethod.GET)
+	public String editEmployee(@PathVariable Integer id, ModelMap model) {
+		Employee employee = employeeService.findEmployeeById(id);
 		model.addAttribute("employee", employee);
 		model.addAttribute("edit", true);
 		return "registration";
@@ -96,21 +96,21 @@ public class UserController {
 	 * This method will be called on form submission, handling POST request for
 	 * updating employee in database. It also validates the user input
 	 */
-	@RequestMapping(value = { "/edit-{ssn}-employee" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/edit-{id}-employee" }, method = RequestMethod.POST)
 	public String updateEmployee(@Valid Employee employee, BindingResult result,
-			ModelMap model, @PathVariable String ssn) {
+			ModelMap model, @PathVariable String id) {
 
 		if (result.hasErrors()) {
 			return "registration";
 		}
 
-		if(!service.isEmployeeSsnUnique(employee.getId(), employee.getSsn())){
-			FieldError ssnError =new FieldError("employee","ssn",messageSource.getMessage("non.unique.ssn", new String[]{employee.getSsn()}, Locale.getDefault()));
-		    result.addError(ssnError);
+		if(!employeeService.isEmployeeIdUnique(employee.getId())){
+			FieldError idError =new FieldError("employee","id",messageSource.getMessage("non.unique.id", new Integer[]{employee.getId()}, Locale.getDefault()));
+		    result.addError(idError);
 			return "registration";
 		}
 
-		service.updateEmployee(employee);
+		employeeService.updateEmployee(employee);
 
 		model.addAttribute("success", "Employee " + employee.getName()	+ " updated successfully");
 		return "success";
@@ -119,9 +119,9 @@ public class UserController {
 	/*
 	 * This method will delete an employee by it's SSN value.
 	 */
-	@RequestMapping(value = { "/delete-{ssn}-employee" }, method = RequestMethod.GET)
-	public String deleteEmployee(@PathVariable String ssn) {
-		service.deleteEmployeeBySsn(ssn);
+	@RequestMapping(value = { "/delete-{id}-employee" }, method = RequestMethod.GET)
+	public String deleteEmployee(@PathVariable int id) {
+		employeeService.deleteEmployeeById(id);
 		return "redirect:/list";
 	}
 
