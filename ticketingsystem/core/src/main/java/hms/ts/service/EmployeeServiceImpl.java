@@ -5,7 +5,6 @@ import hms.ts.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service("employeeService")
@@ -54,5 +53,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Employee employee = findEmployeeById(id);
 		return ( employee == null || ((id != null) && (employee.getId() == id)));
 	}
+
+//	public List<Role> getAllRoles() {
+//		return employeeDao.findAllRoles();
+//	}
+
+	/*protected Map getRoleList(HttpServletRequest request) throws Exception {
+		Map roleList = new HashMap();
+		Map<Integer,String> role = new LinkedHashMap<Integer,String>();
+		role.put(0, "Manager");
+		role.put(1, "Tech Lead");
+		role.put(2, "Senior Software Engineer");
+		role.put(3, "Software Engineer");
+		role.put(4, "Senior Software Engineer");
+		role.put(5, "Associate Software Engineer");
+		role.put(6, "Trainee Software Engineer");
+		role.put(7, "Marketing Officer");
+		roleList.put("countryList", role);
+		return roleList;
+	}*/
 	
 }

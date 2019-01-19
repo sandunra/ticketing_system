@@ -38,6 +38,16 @@
 		    </tr>
 
 			<tr>
+				<td><label for="role">Role: </label> </td>
+				<td>
+						<form:select path="role">
+							<form:options items="${countryList}" />
+						</form:select>
+				</td>
+				<td><form:errors path="role" cssClass="error"/></td>
+			</tr>
+
+			<tr>
 				<td><label for="email">Username: </label> </td>
 				<td><form:input path="username" id="email"/></td>
 				<td><form:errors path="username" cssClass="error"/></td>
@@ -45,7 +55,7 @@
 
 			<tr>
 				<td><label for="email">Password: </label> </td>
-				<td><form:input path="password" id="password"/></td>
+				<td><form:password path="password" id="password"/></td>
 				<td><form:errors path="password" cssClass="error"/></td>
 			</tr>
 	
@@ -65,6 +75,6 @@
 	</form:form>
 	<br/>
 	<br/>
-	Go back to <a href="<c:url value='/list' />">List of All Employees</a>
+	Go back to <a href="<c:url value='/employee/list' />">List of All Employees</a>
 </body>
 </html>

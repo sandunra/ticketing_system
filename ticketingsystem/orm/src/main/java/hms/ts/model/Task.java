@@ -38,6 +38,21 @@ public class Task implements Serializable {
     @Column(name="comment")
     private String comment;
 
+    public Task() {
+
+    }
+
+    public Task(Project project, String title, String description, Employee employee, int assignedHours, int spentHours, String comment, int status) {
+        this.project = project;
+        this.title = title;
+        this.description = description;
+        this.employee = employee;
+        this.assignedHours = assignedHours;
+        this.spentHours = spentHours;
+        this.comment = comment;
+        this.status = status;
+    }
+
     public int getId() {
         return id;
     }

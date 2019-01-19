@@ -11,7 +11,16 @@
 	message : ${success}
 	<br/>
 	<br/>
-	Go back to <a href="<c:url value='/list' />">List of All Employees</a>
+
+	Go back to
+	<c:choose>
+		<c:when test="${from}">
+			<a href="<c:url value='/employee/list' />">List of All Employees</a>
+		</c:when>
+		<c:otherwise>
+			<a href="<c:url value='/project/list' />">List of All Projects</a>
+		</c:otherwise>
+	</c:choose>
 	
 </body>
 

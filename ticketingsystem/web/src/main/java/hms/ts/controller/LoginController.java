@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/user")
 public class LoginController {
 
 	@Autowired
-	private AuthService authenticateService;			// This will auto-inject the authentication service into the controller.
+	private AuthService authenticateService;
+	// This will auto-inject the authentication service into the controller.
 
 	private static Logger log = Logger.getLogger(LoginController.class);
 
@@ -24,6 +27,7 @@ public class LoginController {
 		String msg = "";
 		boolean isValid = authenticateService.findUser(username, password);
 		log.info("Is user valid?= " + isValid);
+		log.info("username?= " + username);
 
 		if(isValid) {
 			msg = "Welcome " + username + "!";
@@ -32,5 +36,12 @@ public class LoginController {
 		}
 
 		return new ModelAndView("result", "output", msg);
+	}
+
+	@RequestMapping("/logout")
+	public String logout(HttpSession session ) {
+		session.invalidate();
+		return "redirect:/";
+
 	}
 }

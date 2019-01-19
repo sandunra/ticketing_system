@@ -1,23 +1,28 @@
 package hms.ts.controller;
 
 import hms.ts.model.Employee;
+import hms.ts.model.Role;
 import hms.ts.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/employee")
 public class UserController {
 
 	@Autowired
@@ -29,7 +34,7 @@ public class UserController {
 	/*
 	 * This method will list all existing employees.
 	 */
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "", "/list" }, method = RequestMethod.GET)
 	public String listEmployees(ModelMap model) {
 
 		List<Employee> employees = employeeService.findAllEmployees();
@@ -77,6 +82,7 @@ public class UserController {
 		employeeService.saveEmployee(employee);
 
 		model.addAttribute("success", "Employee " + employee.getName() + " registered successfully");
+		model.addAttribute("from", true);
 		return "success";
 	}
 
@@ -84,7 +90,7 @@ public class UserController {
 	/*
 	 * This method will provide the medium to update an existing employee.
 	 */
-	@RequestMapping(value = { "/edit-{id}-employee" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.GET)
 	public String editEmployee(@PathVariable Integer id, ModelMap model) {
 		Employee employee = employeeService.findEmployeeById(id);
 		model.addAttribute("employee", employee);
@@ -96,7 +102,7 @@ public class UserController {
 	 * This method will be called on form submission, handling POST request for
 	 * updating employee in database. It also validates the user input
 	 */
-	@RequestMapping(value = { "/edit-{id}-employee" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.POST)
 	public String updateEmployee(@Valid Employee employee, BindingResult result,
 			ModelMap model, @PathVariable String id) {
 
@@ -119,10 +125,28 @@ public class UserController {
 	/*
 	 * This method will delete an employee by it's SSN value.
 	 */
-	@RequestMapping(value = { "/delete-{id}-employee" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/delete-{id}" }, method = RequestMethod.GET)
 	public String deleteEmployee(@PathVariable int id) {
 		employeeService.deleteEmployeeById(id);
-		return "redirect:/list";
+		return "redirect:/employee/list";
 	}
+
+	/*@RequestMapping(value = { "", "/list" }, method = RequestMethod.GET)
+	public ModelMap listRoles(ModelMap model) {
+
+		List<Role> roles = employeeService.getAllRoles();
+		model.addAttribute("employees", roles);
+		return model;
+	}*/
+
+	/*@ModelAttribute("roleList")
+	public Map<String, String> getRoleList() {
+		Map<String, String> countryList = new HashMap<String, String>();
+		countryList.put("US", "United States");
+		countryList.put("CH", "China");
+		countryList.put("SG", "Singapore");
+		countryList.put("MY", "Malaysia");
+		return countryList;
+	}*/
 
 }

@@ -28,6 +28,18 @@ public class Employee implements Serializable{
     @Column(name="email")
     private String email;
 
+    public Employee() {
+
+    }
+
+    public Employee(Role role, String name, String username, String password, String email) {
+        this.role = role;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
     public int getId() {
         return id;
     }

@@ -22,7 +22,7 @@
 
 	<h2>Add Project</h2>
  
-	<form:form method="POST" modelAttribute="employee">
+	<form:form method="POST" modelAttribute="project">
 		<form:input type="hidden" path="id" id="id"/>
 		<table>
 			<tr>
@@ -44,7 +44,7 @@
 			</tr>
 
 			<tr>
-				<td><label for="client">Password: </label> </td>
+				<td><label for="client">Client: </label> </td>
 				<td><form:input path="client" id="client"/></td>
 				<td><form:errors path="client" cssClass="error"/></td>
 			</tr>
@@ -65,6 +65,6 @@
 	</form:form>
 	<br/>
 	<br/>
-	Go back to <a href="<c:url value='/list' />">List of All Employees</a>
+	Go back to <a href="<c:url value='/project/list' />">List of All Projects</a>
 </body>
 </html>

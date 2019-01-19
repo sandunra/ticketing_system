@@ -1,6 +1,7 @@
 package hms.ts.dao;
 
 import hms.ts.model.Employee;
+import hms.ts.model.Role;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface EmployeeDao {
 	List<Employee> findAllEmployees();
 
 	Employee findEmployeeById(int id);
+
+//	List<Role> findAllRoles();
 
 }

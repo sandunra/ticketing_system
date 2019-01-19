@@ -1,6 +1,7 @@
 package hms.ts.dao;
 
 import hms.ts.model.Employee;
+import hms.ts.model.Role;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -36,4 +37,9 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
 		criteria.add(Restrictions.eq("id", id));
 		return (Employee) criteria.uniqueResult();
 	}
+
+	/*public List<Role> findAllRoles() {
+		Criteria criteria = createEntityCriteria();
+		return (List<Role>) criteria.list();
+	}*/
 }

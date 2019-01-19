@@ -24,6 +24,17 @@ public class Project implements Serializable {
     @Column(name="client")
     private String client;
 
+    public Project() {
+
+    }
+
+    public Project(String title, String description, String client, String type) {
+        this.title = title;
+        this.description = description;
+        this.client = client;
+        this.type = type;
+    }
+
     public int getId() {
         return id;
     }
