@@ -8,13 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/project")
@@ -45,7 +48,7 @@ public class ProjectController {
 		Project project = new Project();
 		model.addAttribute("project", project);
 		model.addAttribute("edit", false);
-		return "newProject";
+		return "addProject";
 	}
 
 	/*
@@ -57,7 +60,7 @@ public class ProjectController {
 			ModelMap model) {
 
 		if (result.hasErrors()) {
-			return "newProject";
+			return "addProject";
 		}
 
 		/*
@@ -71,7 +74,7 @@ public class ProjectController {
 		if(!projectService.isProjectIdUnique(project.getId())){
 			FieldError ssnError =new FieldError("project","id",messageSource.getMessage("non.unique.id", new Integer[]{project.getId()}, Locale.getDefault()));
 		    result.addError(ssnError);
-			return "newProject";
+			return "addProject";
 		}
 
 		projectService.saveProject(project);
@@ -90,7 +93,7 @@ public class ProjectController {
 		Project project = projectService.findProjectById(id);
 		model.addAttribute("project", project);
 		model.addAttribute("edit", true);
-		return "newProject";
+		return "addProject";
 	}
 	
 	/*
@@ -102,13 +105,13 @@ public class ProjectController {
 			ModelMap model, @PathVariable String id) {
 
 		if (result.hasErrors()) {
-			return "newProject";
+			return "addProject";
 		}
 
 		if(!projectService.isProjectIdUnique(project.getId())){
 			FieldError idError =new FieldError("project","id",messageSource.getMessage("non.unique.id", new Integer[]{project.getId()}, Locale.getDefault()));
 		    result.addError(idError);
-			return "newProject";
+			return "addProject";
 		}
 
 		projectService.updateProject(project);
@@ -124,6 +127,16 @@ public class ProjectController {
 	public String deleteProject(@PathVariable int id) {
 		projectService.deleteProjectById(id);
 		return "redirect:/project/list";
+	}
+
+	@ModelAttribute("appTypeList")
+	public Map<String, String> getAppTypeList() {
+		Map<String, String> appTypeList = new HashMap<String, String>();
+		appTypeList.put("Android", "Android");
+		appTypeList.put("ios", "ios");
+		appTypeList.put("Web", "Web");
+		appTypeList.put("Other", "Other");
+		return appTypeList;
 	}
 
 }

@@ -1,7 +1,8 @@
 package hms.ts.model;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name="employee")
@@ -13,10 +14,10 @@ public class Employee implements Serializable{
     private int id;
 
     @ManyToOne(targetEntity = Role.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="role_id", referencedColumnName = "id", insertable =  false, updatable = false)
+    @JoinColumn(name="role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
-    @Column(name="name")
+    @Column(name="name", nullable = false)
     private String name;
 
     @Column(name="username")
@@ -25,15 +26,17 @@ public class Employee implements Serializable{
     @Column(name="password")
     private String password;
 
-    @Column(name="email")
+    @Column(name="email", nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "employee", cascade=CascadeType.ALL)
+    private List<Task> taskList;
 
     public Employee() {
 
     }
 
-    public Employee(Role role, String name, String username, String password, String email) {
-        this.role = role;
+    public Employee(String name, String username, String password, String email) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -86,5 +89,35 @@ public class Employee implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (id ^ (id >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Employee))
+            return false;
+        Employee other = (Employee) obj;
+        if (id != other.id)
+            return false;
+        return true;
     }
 }

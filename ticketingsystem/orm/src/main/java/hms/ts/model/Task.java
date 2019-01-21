@@ -13,17 +13,17 @@ public class Task implements Serializable {
     private int id;
 
     @ManyToOne(targetEntity = Project.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="project_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name="project_id", nullable = false)
     private Project project;
 
-    @Column(name="title")
+    @Column(name="title", nullable = false)
     private String title;
 
     @Column(name="description")
     private String description;
 
     @ManyToOne(targetEntity = Employee.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="employee_id", referencedColumnName = "id", insertable =  false, updatable = false)
+    @JoinColumn(name="employee_id", nullable = false)
     private Employee employee;
 
     @Column(name="assigned_hours")
@@ -42,11 +42,9 @@ public class Task implements Serializable {
 
     }
 
-    public Task(Project project, String title, String description, Employee employee, int assignedHours, int spentHours, String comment, int status) {
-        this.project = project;
+    public Task( String title, String description,  int assignedHours, int spentHours, String comment, int status) {
         this.title = title;
         this.description = description;
-        this.employee = employee;
         this.assignedHours = assignedHours;
         this.spentHours = spentHours;
         this.comment = comment;
@@ -123,5 +121,27 @@ public class Task implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (id ^ (id >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Task))
+            return false;
+        Task other = (Task) obj;
+        if (id != other.id)
+            return false;
+        return true;
     }
 }

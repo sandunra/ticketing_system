@@ -2,6 +2,7 @@ package hms.ts.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name="role")
@@ -12,8 +13,11 @@ public class Role implements Serializable {
     @Column(name="id")
     private int id;
 
-    @Column(name="title")
+    @Column(name="title" , unique = true)
     private String title;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private List<Employee> employeeList;
 
     public Role() {
 
@@ -37,5 +41,13 @@ public class Role implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<Employee> getEmployeeList() {
+        return employeeList;
+    }
+
+    public void setEmployeeList(List<Employee> employeeList) {
+        this.employeeList = employeeList;
     }
 }

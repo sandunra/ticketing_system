@@ -2,6 +2,7 @@ package hms.ts.service;
 
 import hms.ts.dao.EmployeeDao;
 import hms.ts.model.Employee;
+import hms.ts.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public void saveEmployee(Employee employee) {
 		dao.saveEmployee(employee);
+
+		/*Employee entity = dao.findById(employee.getId());
+		if(entity!=null){
+			entity.setName(employee.getName());
+			entity.setEmail(employee.getEmail());
+			entity.setPassword(employee.getPassword());
+			entity.setUsername(employee.getUsername());
+			entity.setRole(employee.getRole());
+		}
+
+		dao.saveEmployee(entity);*/
+
+
 	}
 
 	/*
@@ -34,6 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			entity.setEmail(employee.getEmail());
 			entity.setPassword(employee.getPassword());
 			entity.setUsername(employee.getUsername());
+			entity.setRole(employee.getRole());
 		}
 	}
 
@@ -54,9 +69,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return ( employee == null || ((id != null) && (employee.getId() == id)));
 	}
 
-//	public List<Role> getAllRoles() {
-//		return employeeDao.findAllRoles();
-//	}
+	public List<Role> getAllRoles() {
+		return dao.findAllRoles();
+	}
 
 	/*protected Map getRoleList(HttpServletRequest request) throws Exception {
 		Map roleList = new HashMap();

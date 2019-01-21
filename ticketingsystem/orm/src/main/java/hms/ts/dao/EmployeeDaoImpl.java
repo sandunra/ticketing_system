@@ -17,6 +17,15 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
 	}
 
 	public void saveEmployee(Employee employee) {
+		/*Query query = getSession().createSQLQuery("insert into emplyoee (email, name, password, username, role_id)" + "'emil', 'name', 'password', 'username', 'role_id'");
+		query.setInteger("role_id", employee.getRole().getId());
+		query.setString("email", employee.getEmail());
+		query.setString("name", employee.getName());
+		query.setString("password", employee.getPassword());
+		query.setString("username", employee.getUsername());
+		query.executeUpdate();*/
+
+
 		persist(employee);
 	}
 
@@ -38,8 +47,15 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
 		return (Employee) criteria.uniqueResult();
 	}
 
-	/*public List<Role> findAllRoles() {
-		Criteria criteria = createEntityCriteria();
-		return (List<Role>) criteria.list();
-	}*/
+	public List<Role> findAllRoles() {
+		List<Role> result = null;
+		try{
+			Query query = getSession().createQuery("SELECT R.title FROM Role R");
+			result = query.list();
+			query.executeUpdate();
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

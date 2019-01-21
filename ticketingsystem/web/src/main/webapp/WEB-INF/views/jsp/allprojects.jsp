@@ -25,7 +25,7 @@
 		<c:forEach items="${projects}" var="project">
 			<tr>
 				<td><a href="<c:url value='/project/edit-${project.id}' />">${project.id}</a></td>
-				<td>${project.title}</td>
+				<td><a href="<c:url value='/project-${project.id}/task-list' />">${project.title}</a></td>
 				<td>${project.description}</td>
 				<td>${project.type}</td>
 				<td>${project.client}</td>

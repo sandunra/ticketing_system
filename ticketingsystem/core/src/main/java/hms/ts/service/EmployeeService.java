@@ -21,6 +21,6 @@ public interface EmployeeService {
 
 	boolean isEmployeeIdUnique(Integer id);
 
-//	List<Role> getAllRoles();
+	List<Role> getAllRoles();
 	
 }

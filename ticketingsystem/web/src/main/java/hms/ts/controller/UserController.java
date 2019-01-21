@@ -6,7 +6,6 @@ import hms.ts.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/employee")
@@ -50,7 +47,7 @@ public class UserController {
 		Employee employee = new Employee();
 		model.addAttribute("employee", employee);
 		model.addAttribute("edit", false);
-		return "registration";
+		return "addEmployee";
 	}
 
 	/*
@@ -62,7 +59,7 @@ public class UserController {
 			ModelMap model) {
 
 		if (result.hasErrors()) {
-			return "registration";
+			return "addEmployee";
 		}
 
 		/*
@@ -76,7 +73,7 @@ public class UserController {
 		if(!employeeService.isEmployeeIdUnique(employee.getId())){
 			FieldError ssnError =new FieldError("employee","id",messageSource.getMessage("non.unique.id", new Integer[]{employee.getId()}, Locale.getDefault()));
 		    result.addError(ssnError);
-			return "registration";
+			return "addEmployee";
 		}
 		
 		employeeService.saveEmployee(employee);
@@ -95,7 +92,7 @@ public class UserController {
 		Employee employee = employeeService.findEmployeeById(id);
 		model.addAttribute("employee", employee);
 		model.addAttribute("edit", true);
-		return "registration";
+		return "addEmployee";
 	}
 	
 	/*
@@ -107,13 +104,13 @@ public class UserController {
 			ModelMap model, @PathVariable String id) {
 
 		if (result.hasErrors()) {
-			return "registration";
+			return "addEmployee";
 		}
 
 		if(!employeeService.isEmployeeIdUnique(employee.getId())){
 			FieldError idError =new FieldError("employee","id",messageSource.getMessage("non.unique.id", new Integer[]{employee.getId()}, Locale.getDefault()));
 		    result.addError(idError);
-			return "registration";
+			return "addEmployee";
 		}
 
 		employeeService.updateEmployee(employee);
@@ -131,22 +128,27 @@ public class UserController {
 		return "redirect:/employee/list";
 	}
 
-	/*@RequestMapping(value = { "", "/list" }, method = RequestMethod.GET)
-	public ModelMap listRoles(ModelMap model) {
-
-		List<Role> roles = employeeService.getAllRoles();
-		model.addAttribute("employees", roles);
-		return model;
-	}*/
-
 	/*@ModelAttribute("roleList")
-	public Map<String, String> getRoleList() {
-		Map<String, String> countryList = new HashMap<String, String>();
-		countryList.put("US", "United States");
-		countryList.put("CH", "China");
-		countryList.put("SG", "Singapore");
-		countryList.put("MY", "Malaysia");
-		return countryList;
+	public Map<String, String> getCountryList() {
+		Map<String, String> roleList = new HashMap<String, String>();
+
+		//List<Job> jobList = jobService.listjobsByPage(page);
+
+		roleList.put("Manager", "Manager");
+		roleList.put("Tech Lead", "Tech Lead");
+		roleList.put("Senior Software Engineer", "Senior Software Engineer");
+		roleList.put("Software Engineer", "Software Engineer");
+		roleList.put("Associate Software Engineer", "Associate Software Engineer");
+		roleList.put("Trainee Software Engineer", "Trainee Software Engineer");
+		roleList.put("Marketing Officer", "Marketing Officer");
+		return roleList;
 	}*/
+
+	@ModelAttribute("roleList")
+	public List<Role> listRoles() {
+		List<Role> roleList = employeeService.getAllRoles();
+		return roleList;
+	}
+
 
 }

@@ -26,7 +26,7 @@
 			<td><a href="<c:url value='/employee/edit-${employee.id}' />">${employee.id}</a></td>
 			<td>${employee.name}</td>
 			<td>${employee.email}</td>
-			<td>${employee.role}</td>
+			<td>${employee.role.title}</td>
 			<td><a href="<c:url value='/employee/delete-${employee.id}' />">delete</a></td>
 			</tr>
 		</c:forEach>

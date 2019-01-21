@@ -17,6 +17,6 @@ public interface EmployeeDao {
 
 	Employee findEmployeeById(int id);
 
-//	List<Role> findAllRoles();
+	List<Role> findAllRoles();
 
 }

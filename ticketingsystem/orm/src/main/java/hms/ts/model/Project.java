@@ -2,6 +2,7 @@ package hms.ts.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name="project")
@@ -12,7 +13,7 @@ public class Project implements Serializable {
     @Column(name="id")
     private int id;
 
-    @Column(name="title")
+    @Column(name="title", nullable = false)
     private String title;
 
     @Column(name="description")
@@ -23,6 +24,9 @@ public class Project implements Serializable {
 
     @Column(name="client")
     private String client;
+
+    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL)
+    private List<Task> taskList;
 
     public Project() {
 
@@ -73,5 +77,35 @@ public class Project implements Serializable {
 
     public void setClient(String client) {
         this.client = client;
+    }
+
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (int) (id ^ (id >>> 32));
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Project))
+            return false;
+        Project other = (Project) obj;
+        if (id != other.id)
+            return false;
+        return true;
     }
 }

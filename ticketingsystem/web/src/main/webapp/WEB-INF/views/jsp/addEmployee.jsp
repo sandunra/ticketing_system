@@ -20,7 +20,7 @@
 
 <body>
 
-	<h2>Registration Form</h2>
+	<h2>Add/Edit Employee</h2>
  
 	<form:form method="POST" modelAttribute="employee">
 		<form:input type="hidden" path="id" id="id"/>
@@ -41,7 +41,7 @@
 				<td><label for="role">Role: </label> </td>
 				<td>
 						<form:select path="role">
-							<form:options items="${countryList}" />
+							<form:options items="${roleList}" />
 						</form:select>
 				</td>
 				<td><form:errors path="role" cssClass="error"/></td>

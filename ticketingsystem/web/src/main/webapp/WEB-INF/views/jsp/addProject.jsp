@@ -20,7 +20,7 @@
 
 <body>
 
-	<h2>Add Project</h2>
+	<h2>Add/Edit Project</h2>
  
 	<form:form method="POST" modelAttribute="project">
 		<form:input type="hidden" path="id" id="id"/>
@@ -39,7 +39,10 @@
 
 			<tr>
 				<td><label for="type">Type: </label> </td>
-				<td><form:input path="type" id="type"/></td>
+				<td><form:select path="type" id="type">
+					<form:option value = "NONE" label = "Select"/>
+					<form:options items="${appTypeList}"/>
+				</form:select></td>
 				<td><form:errors path="type" cssClass="error"/></td>
 			</tr>
 
