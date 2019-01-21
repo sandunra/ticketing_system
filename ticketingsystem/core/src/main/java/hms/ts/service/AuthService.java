@@ -4,7 +4,9 @@ import hms.ts.model.Employee;
 import org.apache.log4j.Logger;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AuthService {
 
@@ -17,7 +19,7 @@ public class AuthService {
 		this.hibernateTemplate = hibernateTemplate;
 	}
 
-	@SuppressWarnings( { "unchecked", "deprecation" } )
+	/*@SuppressWarnings( { "unchecked", "deprecation" } )
 	public boolean findUser(String uname,String upwd) {
 		log.info("Checking the user in the database");
 		boolean isValidUser = false;
@@ -33,6 +35,32 @@ public class AuthService {
 			log.error("An error occurred while fetching the user details from the database", e);
 		}
 		return isValidUser;
+	}*/
+
+	@SuppressWarnings( { "unchecked", "deprecation" } )
+	public Map<String, Boolean> findUser(String uname,String upwd) {
+		Map<String, Boolean> userTags = new HashMap<String, Boolean>();
+		log.info("Checking the user in the database");
+		boolean isValidUser = false;
+		boolean isAdminUser = false;
+		String sqlQuery = "from Employee emp where emp.username=? and emp.password=?";
+		try {
+			List<Employee> userObj = (List<Employee>) hibernateTemplate.find(sqlQuery, uname, upwd);
+			if(userObj != null && userObj.size() > 0) {
+				log.info("Id= " + userObj.get(0).getId() + ", Name= " + userObj.get(0).getName() + ", Password= " + userObj.get(0).getPassword());
+				isValidUser = true;
+				if(userObj.get(0).getRole().getTitle().trim().equalsIgnoreCase("Manager")){
+					isAdminUser = true;
+				}
+			}
+		} catch(Exception e) {
+			log.error("An error occurred while fetching the user details from the database", e);
+		}
+
+		userTags.put("isValidUser", isValidUser);
+		userTags.put("isAdminUser", isAdminUser);
+
+		return userTags;
 	}
 
 	/*public boolean findUserRole(String uname,String upwd) {

@@ -1,58 +1,61 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-	<title>User Login</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="WEB-INF/resources/css/style.css" type="text/css">
-
-	<style type="text/css">
-
-		html {
-			-webkit-background-size: cover;
-			-moz-background-size: cover;
-			-o-background-size: cover;
-			background-size: cover;
-		}
-		body, html {
-			height: 100%;
-		}
-
-	</style>
-
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Login page</title>
+	<link href="<c:url value='/resources/css/bootstrap.css' />"  rel="stylesheet"/>
+	<link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
 </head>
 
 <body>
-<div class="container">
-	<h3 id="form_header" class="text-warning" align="center">Login</h3>
-	<div>&nbsp;</div>
+<div id="mainWrapper">
+	<div class="login-container">
+		<div class="login-card">
+			<div class="login-form">
 
-	<div class="sub-main-w3">
+				<!-- User input form to validate a user -->
+				<c:url var="validateUrl" value="/user/validate" />
+				<form id="user_form" action="${validateUrl}" method="post" class="form-horizontal">
+					<c:if test="${param.error != null}">
+						<div class="alert alert-danger">
+							<p>Invalid username and password.</p>
+						</div>
+					</c:if>
+					<c:if test="${param.logout != null}">
+						<div class="alert alert-success">
+							<p>You have been logged out successfully.</p>
+						</div>
+					</c:if>
+					<div class="input-group input-sm">
+						<label class="input-group-addon" for="username"><i class="fa fa-user"></i></label>
+						<input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" required>
+					</div>
+					<div class="input-group input-sm">
+						<label class="input-group-addon" for="password"><i class="fa fa-lock"></i></label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+					</div>
+					<input type="hidden" name="${_csrf.parameterName}" 	value="${_csrf.token}" />
 
-		<!-- User input form to validate a user -->
-		<c:url var="validateUrl" value="/user/validate" />
-		<form id="user_form" action="${validateUrl}" method="POST">
-			<div class="form-group">
-				<label for="username">Username:</label>
-				<input type="text" class="form-control" id="username" placeholder="Enter username" name="username">
+					<div class="form-actions">
+						<input type="submit"
+							   class="btn btn-block btn-primary btn-default" value="Log in">
+					</div>
+				</form>
 			</div>
-			<div class="form-group">
-				<label for="password">Password:</label>
-				<input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
-			</div>
-			<button id="confirm_user" type="submit" class="btn btn-primary">Login</button>
-		</form>
+		</div>
 	</div>
 
 	<!-- copyright -->
-	<div class="footer">
+	<div class="caption">
 		<p>&copy; 2018 BeyondM. All Rights Reserved. | Design by
 			<a href="http://beyondm.net">BeyondM</a>
 		</p>
 	</div>
 	<!-- //copyright -->
+
 </div>
+
 </body>
 </html>
