@@ -22,60 +22,62 @@
 
 	<h2>Add/Edit Task</h2>
  
-	<form:form method="POST" modelAttribute="task">
+	<form:form method="POST" modelAttribute="task" action="/task/new">"
 		<form:input type="hidden" path="id" id="id"/>
 		<table>
 			<tr>
 				<td><label for="title">Title: </label> </td>
-				<td><form:input path="title" id="title"/></td>
+				<td><form:input path="title" id="title" name="title"/></td>
 				<td><form:errors path="title" cssClass="error"/></td>
 		    </tr>
 	    
 			<tr>
 				<td><label for="description">Description: </label> </td>
-				<td><form:input path="description" id="description"/></td>
+				<td><form:input path="description" id="description" name="description"/></td>
 				<td><form:errors path="description" cssClass="error"/></td>
 		    </tr>
 
 			<tr>
 				<td><label for="project">Project: </label> </td>
-				<td><form:select path="project" id="project">
-					<form:option value = "NONE" label = "Select"/>
-					<form:options items="${projectList}"/>
+				<td><form:select path="project" id="project" name="project">
+					<c:forEach items="${projectList}" var="projects">
+						<option value="${projects.id}" >${projects.title}</option>
+					</c:forEach>
 				</form:select></td>
 				<td><form:errors path="project" cssClass="error"/></td>
 			</tr>
 
 			<tr>
 				<td><label for="employee">Assignee: </label> </td>
-				<td><form:select path="employee" id="employee">
-					<form:option value = "NONE" label = "Select"/>
-					<form:options items="${employeeList}"/>
+				<td><form:select path="employee" id="employee" name="employee">
+					<c:forEach items="${employeeList}" var="employee">
+						<option value="${employee.id}" >${employee.name}</option>
+					</c:forEach>
 				</form:select></td>
 				<td><form:errors path="employee" cssClass="error"/></td>
 			</tr>
 
 			<tr>
 				<td><label for="assignedHours">Assigned Hours: </label> </td>
-				<td><form:input path="assignedHours" id="assignedHours"/></td>
+				<td><form:input path="assignedHours" id="assignedHours" name="assignedHours"/></td>
 				<td><form:errors path="assignedHours" cssClass="error"/></td>
 			</tr>
 
 			<tr>
 				<td><label for="spentHours">Assign Hours: </label> </td>
-				<td><form:input path="spentHours" id="spentHours"/></td>
+				<td><form:input path="spentHours" id="spentHours" name="spentHours"/></td>
 				<td><form:errors path="spentHours" cssClass="error"/></td>
 			</tr>
 
 			<tr>
 				<td><label for="comment">Comment: </label> </td>
-				<td><form:textarea path="comment" id="comment"/></td>
+				<td><form:textarea path="comment" id="comment" name="comment"/></td>
 				<td><form:errors path="comment" cssClass="error"/></td>
 			</tr>
 
 			<tr>
 				<td><label for="status">Status: </label> </td>
-				<td><form:select path="status" id="status">
+				<td><form:select path="status" id="status" name="status">
 					<form:option value = '0' label = "Select"/>
 					<form:option value='1' label="Ongoing"/>
 					<form:option value='2' label="Complete"/>

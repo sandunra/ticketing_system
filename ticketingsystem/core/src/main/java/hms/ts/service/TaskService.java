@@ -22,8 +22,8 @@ public interface TaskService {
 
 	boolean isTaskIdUnique(Integer id);
 
-	List<Employee> listAllEmployees();
+	/*List<Employee> listAllEmployees();
 
-	List<Project> listAllProjects();
+	List<Project> listAllProjects();*/
 	
 }

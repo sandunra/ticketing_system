@@ -62,12 +62,12 @@ public class TaskServiceImpl implements TaskService {
 		return ( task == null || ((id != null) && (task.getId() == id)));
 	}
 
-	public List<Employee> listAllEmployees() {
+	/*public List<Employee> listAllEmployees() {
 		return dao.listAllEmployees();
-	}
+	}*/
 
-	public List<Project> listAllProjects() {
-		return dao.listAllProjects();
-	}
+//	public List<Project> listAllProjects() {
+//		return dao.listAllProjects();
+//	}
 	
 }

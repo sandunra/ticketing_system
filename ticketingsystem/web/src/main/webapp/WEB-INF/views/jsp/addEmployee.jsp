@@ -41,7 +41,11 @@
 				<td><label for="role">Role: </label> </td>
 				<td>
 						<form:select path="role">
-							<form:options items="${roleList}" />
+							<c:forEach items="${roleList}" var="roles">
+								<option value="${roles.id}" >${roles.title}</option>
+							</c:forEach>
+
+							<%--<form:options items="${roleList}" />--%>
 						</form:select>
 				</td>
 				<td><form:errors path="role" cssClass="error"/></td>

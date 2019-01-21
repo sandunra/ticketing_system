@@ -17,7 +17,10 @@
 
 
 <body>
-	<h2>List of Projects</h2>
+
+	<h2>${projectId} Project Task List</h2>
+
+
 	<table>
 		<td>ID</td><td>TITLE</td><td>DESCRIPTION</td><td>ASSIGNED HOURS</td><td>ASSIGNEE</td><td>COMMENT</td><td>SPENT HOURS</td><td>STATUS</td><td></td>
 		<tr>

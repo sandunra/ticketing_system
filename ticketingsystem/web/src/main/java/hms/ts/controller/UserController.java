@@ -3,6 +3,7 @@ package hms.ts.controller;
 import hms.ts.model.Employee;
 import hms.ts.model.Role;
 import hms.ts.service.EmployeeService;
+import hms.ts.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,6 +26,9 @@ public class UserController {
 
 	@Autowired
 	EmployeeService employeeService;
+
+	@Autowired
+	RoleService roleService;
 	
 	@Autowired
 	MessageSource messageSource;
@@ -146,7 +151,7 @@ public class UserController {
 
 	@ModelAttribute("roleList")
 	public List<Role> listRoles() {
-		List<Role> roleList = employeeService.getAllRoles();
+		List<Role> roleList = roleService.findAllRoles();
 		return roleList;
 	}
 

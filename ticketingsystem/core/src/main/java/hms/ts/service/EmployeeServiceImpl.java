@@ -6,6 +6,8 @@ import hms.ts.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("employeeService")
@@ -69,7 +71,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return ( employee == null || ((id != null) && (employee.getId() == id)));
 	}
 
-	public List<Role> getAllRoles() {
+	public ArrayList<Role> getAllRoles() {
 		return dao.findAllRoles();
 	}
 

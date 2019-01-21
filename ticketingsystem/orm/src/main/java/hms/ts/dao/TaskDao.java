@@ -18,7 +18,7 @@ public interface TaskDao {
 
 	List<Task> findAllTaskByEmployeeId(int empId);
 
-	List<Employee> listAllEmployees();
+//	List<Employee> listAllEmployees();
 
 	List<Project> listAllProjects();
 

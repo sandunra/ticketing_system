@@ -7,7 +7,8 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.util.*;
 
 @Repository("employeeDao")
 public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements EmployeeDao {
@@ -47,15 +48,9 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
 		return (Employee) criteria.uniqueResult();
 	}
 
-	public List<Role> findAllRoles() {
-		List<Role> result = null;
-		try{
-			Query query = getSession().createQuery("SELECT R.title FROM Role R");
-			result = query.list();
-			query.executeUpdate();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
+	public ArrayList<Role> findAllRoles() {
+		Criteria criteria = createEntityCriteria();
+		return (ArrayList<Role>) criteria.list();
 	}
+
 }

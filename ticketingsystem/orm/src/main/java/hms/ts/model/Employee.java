@@ -29,7 +29,7 @@ public class Employee implements Serializable{
     @Column(name="email", nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "employee", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "employee")
     private List<Task> taskList;
 
     public Employee() {

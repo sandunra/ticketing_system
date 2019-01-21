@@ -44,7 +44,7 @@ public class TaskDaoImpl extends AbstractDao<Integer, Task> implements TaskDao {
 		return employeeTaskList;
 	}
 
-	public List<Employee> listAllEmployees() {
+	/*public List<Employee> listAllEmployees() {
 		List<Employee> result = null;
 		try{
 			Query query = getSession().createQuery("SELECT E.name FROM Employee E");
@@ -54,7 +54,7 @@ public class TaskDaoImpl extends AbstractDao<Integer, Task> implements TaskDao {
 			e.printStackTrace();
 		}
 		return result;
-	}
+	}*/
 
 	public List<Project> listAllProjects() {
 		List<Project> result = null;

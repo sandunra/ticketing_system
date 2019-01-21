@@ -3,17 +3,17 @@ package hms.ts.controller;
 import hms.ts.model.Employee;
 import hms.ts.model.Project;
 import hms.ts.model.Task;
+import hms.ts.service.EmployeeService;
+import hms.ts.service.ProjectService;
 import hms.ts.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -25,6 +25,12 @@ public class TaskController {
 
 	@Autowired
 	TaskService taskService;
+
+	@Autowired
+	ProjectService projectService;
+
+	@Autowired
+	EmployeeService employeeService;
 	
 	@Autowired
 	MessageSource messageSource;
@@ -37,6 +43,7 @@ public class TaskController {
 
 		List<Task> tasks = taskService.findAllTaskByProjectId(id);
 		model.addAttribute("tasks", tasks);
+		model.addAttribute("projectId", id);
 		model.addAttribute("admin", true);
 		return "projectTasks";
 	}
@@ -68,9 +75,37 @@ public class TaskController {
 	 * This method will be called on form submission, handling POST request for
 	 * saving employee in database. It also validates the user input
 	 */
-	@RequestMapping(value = { "task/new" }, method = RequestMethod.POST)
-	public String saveTask(@Valid Task task, BindingResult result,
-			ModelMap model) {
+
+	@RequestMapping(value = "task/new", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public String saveTask(@RequestParam("title") String title,
+								   @RequestParam("description") String description,
+								   @RequestParam("project") int projectId,
+								   @RequestParam("employee") int employeeId,
+								   @RequestParam("assignedHours") int assignedHours,
+								   @RequestParam("spentHours") int spentHours,
+								   @RequestParam("status") int status,
+								   @RequestParam("comment") String comment) {
+
+		Task task = new Task();
+		task.setTitle(title);
+		task.setDescription(description);
+		task.setProject(projectService.findProjectById(projectId));
+		task.setEmployee(employeeService.findEmployeeById(employeeId));
+		task.setTitle(title);
+		task.setAssignedHours(assignedHours);
+		task.setSpentHours(spentHours);
+		task.setComment(comment);
+		task.setComment(comment);
+		task.setStatus(status);
+
+		taskService.saveTask(task);
+
+		return "success";
+	}
+
+
+	public String saveTask(@Valid Task task, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors()) {
 			return "addTask";
@@ -144,13 +179,13 @@ public class TaskController {
 
 	@ModelAttribute("employeeList")
 	public List<Employee> listEmployees() {
-		List<Employee> employeeList = taskService.listAllEmployees();
+		List<Employee> employeeList = employeeService.findAllEmployees();
 		return employeeList;
 	}
 
 	@ModelAttribute("projectList")
 	public List<Project> listProjects() {
-		List<Project> projectList = taskService.listAllProjects();
+		List<Project> projectList = projectService.findAllProjects();
 		return projectList;
 	}
 

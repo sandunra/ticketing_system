@@ -13,7 +13,7 @@ public class Task implements Serializable {
     private int id;
 
     @ManyToOne(targetEntity = Project.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="project_id", nullable = false)
+    @JoinColumn(name="project_id", referencedColumnName = "id", nullable = false)
     private Project project;
 
     @Column(name="title", nullable = false)
@@ -23,7 +23,7 @@ public class Task implements Serializable {
     private String description;
 
     @ManyToOne(targetEntity = Employee.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="employee_id", nullable = false)
+    @JoinColumn(name="employee_id",  referencedColumnName = "id", nullable = false)
     private Employee employee;
 
     @Column(name="assigned_hours")
