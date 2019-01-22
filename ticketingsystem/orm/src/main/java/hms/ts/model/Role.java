@@ -13,7 +13,7 @@ public class Role implements Serializable {
     @Column(name="id")
     private int id;
 
-    @Column(name="title" , unique = true)
+    @Column(name="title" )
     private String title;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)

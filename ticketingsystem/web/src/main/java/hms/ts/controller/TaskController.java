@@ -41,7 +41,7 @@ public class TaskController {
 	@RequestMapping(value = { "project-{id}/task-list" }, method = RequestMethod.GET)
 	public String listProjectTasks(@PathVariable Integer id, ModelMap model) {
 
-		List<Task> tasks = taskService.findAllTaskByProjectId(id);
+		List<Task> tasks = projectService.getProjectTasks(id);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("projectId", id);
 		model.addAttribute("admin", true);
@@ -51,7 +51,7 @@ public class TaskController {
 	/*
 	 * This method will list all existing tasks related with selected employee.
 	 */
-	@RequestMapping(value = { "employee-{id}/task-list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "employee-{id}/task-list" }, method = RequestMethod.POST)
 	public String listEmployeeTasks(@PathVariable Integer id, ModelMap model) {
 
 		List<Task> tasks = taskService.findAllTaskByEmployeeId(id);
@@ -63,11 +63,12 @@ public class TaskController {
 	/*
 	 * This method will provide the medium to add a new project.
 	 */
-	@RequestMapping(value = { "task/new" }, method = RequestMethod.GET)
-	public String newTask(ModelMap model) {
+	@RequestMapping(value = { "project-{id}/task/new" }, method = RequestMethod.GET)
+	public String newTask(@PathVariable Integer id, ModelMap model) {
 		Task task = new Task();
 		model.addAttribute("task", task);
 		model.addAttribute("edit", false);
+		model.addAttribute("id", id);
 		return "addTask";
 	}
 
@@ -76,9 +77,8 @@ public class TaskController {
 	 * saving employee in database. It also validates the user input
 	 */
 
-	@RequestMapping(value = "task/new", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public String saveTask(@RequestParam("title") String title,
+	@RequestMapping(value = "project-{id}/task-list", method = RequestMethod.POST)
+	public String saveTask(@PathVariable Integer id, ModelMap model, @RequestParam("title") String title,
 								   @RequestParam("description") String description,
 								   @RequestParam("project") int projectId,
 								   @RequestParam("employee") int employeeId,
@@ -92,18 +92,22 @@ public class TaskController {
 		task.setDescription(description);
 		task.setProject(projectService.findProjectById(projectId));
 		task.setEmployee(employeeService.findEmployeeById(employeeId));
-		task.setTitle(title);
 		task.setAssignedHours(assignedHours);
 		task.setSpentHours(spentHours);
-		task.setComment(comment);
 		task.setComment(comment);
 		task.setStatus(status);
 
 		taskService.saveTask(task);
 
-		return "success";
-	}
+		List<Task> tasks = projectService.getProjectTasks(id);
 
+
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("projectId", id);
+		model.addAttribute("admin", true);
+
+		return "projectTasks";
+	}
 
 	public String saveTask(@Valid Task task, BindingResult result, ModelMap model) {
 

@@ -22,7 +22,7 @@
 
 	<h2>Add/Edit Task</h2>
  
-	<form:form method="POST" modelAttribute="task" action="/task/new">"
+	<form:form method="POST" modelAttribute="task" action="/project-${id}/task-list">"
 		<form:input type="hidden" path="id" id="id"/>
 		<table>
 			<tr>
@@ -105,10 +105,10 @@
 	Go back to
 	<c:choose>
 		<c:when test="${admin}">
-			<a href="<c:url value='/project-{id}/task-list' />">List of Project Tasks</a>
+			<a href="<c:url value='/project-${id}/task-list' />">List of Project Tasks</a>
 		</c:when>
 		<c:otherwise>
-			<a href="<c:url value='/employee-{id}/task-list' />">List of All Tasks</a>
+			<a href="<c:url value='/project-${id}/task-list' />">List of All Tasks</a>
 		</c:otherwise>
 	</c:choose>
 </body>

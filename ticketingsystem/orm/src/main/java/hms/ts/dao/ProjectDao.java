@@ -17,6 +17,6 @@ public interface ProjectDao {
 
 	Project findProjectById(int id);
 
-	List<Task> getProjectTasks(Project project);
+	List<Task> getProjectTasks(int ProjectId);
 
 }

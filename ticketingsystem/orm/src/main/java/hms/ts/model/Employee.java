@@ -13,8 +13,8 @@ public class Employee implements Serializable{
     @Column(name="id")
     private int id;
 
-    @ManyToOne(targetEntity = Role.class,cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-    @JoinColumn(name="role_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name="role_id", nullable = false)
     private Role role;
 
     @Column(name="name", nullable = false)
@@ -29,7 +29,7 @@ public class Employee implements Serializable{
     @Column(name="email", nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee", cascade=CascadeType.ALL)
     private List<Task> taskList;
 
     public Employee() {

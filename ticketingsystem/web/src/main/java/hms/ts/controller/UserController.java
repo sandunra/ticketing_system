@@ -2,6 +2,7 @@ package hms.ts.controller;
 
 import hms.ts.model.Employee;
 import hms.ts.model.Role;
+import hms.ts.model.Task;
 import hms.ts.service.EmployeeService;
 import hms.ts.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -55,11 +54,33 @@ public class UserController {
 		return "addEmployee";
 	}
 
+	@RequestMapping(value = "/new", method = RequestMethod.POST)
+	public String saveEmployee(@RequestParam("name") String name,
+						   @RequestParam("email") String email,
+						   @RequestParam("role") int roletId,
+						   @RequestParam("username") String username,
+						   @RequestParam("password") String password, ModelMap model) {
+
+		Employee employee = new Employee();
+		employee.setName(name);
+		employee.setEmail(email);
+		employee.setRole(roleService.findRoleById(roletId));
+		employee.setUsername(username);
+		employee.setPassword(password);
+
+		employeeService.saveEmployee(employee);
+
+		model.addAttribute("success", "Employee " + employee.getName() + " registered successfully");
+		model.addAttribute("from", true);
+		return "success";
+	}
+
+
 	/*
 	 * This method will be called on form submission, handling POST request for
 	 * saving employee in database. It also validates the user input
 	 */
-	@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
+	/*@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
 	public String saveEmployee(@Valid Employee employee, BindingResult result,
 			ModelMap model) {
 
@@ -67,14 +88,14 @@ public class UserController {
 			return "addEmployee";
 		}
 
-		/*
+		*//*
 		 * Preferred way to achieve uniqueness of field [ssn] should be implementing custom @Unique annotation 
 		 * and applying it on field [ssn] of Model class [Employee].
 		 * 
 		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
 		 * framework as well while still using internationalized messages.
 		 * 
-		 */
+		 *//*
 		if(!employeeService.isEmployeeIdUnique(employee.getId())){
 			FieldError ssnError =new FieldError("employee","id",messageSource.getMessage("non.unique.id", new Integer[]{employee.getId()}, Locale.getDefault()));
 		    result.addError(ssnError);
@@ -86,7 +107,7 @@ public class UserController {
 		model.addAttribute("success", "Employee " + employee.getName() + " registered successfully");
 		model.addAttribute("from", true);
 		return "success";
-	}
+	}*/
 
 
 	/*

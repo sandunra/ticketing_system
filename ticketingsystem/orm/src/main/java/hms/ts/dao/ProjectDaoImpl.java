@@ -39,11 +39,13 @@ public class ProjectDaoImpl extends AbstractDao<Integer, Project> implements Pro
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Task> getProjectTasks(Project project) {
+	public List<Task> getProjectTasks(int projectId) {
 		List<Task> projectTaskList = null;
-		Query query = getSession().createQuery("from Task where project = :project ");
+		/*Query query = getSession().createQuery("from Task where project = :project ");
 		query.setParameter("project", project);
-		projectTaskList = query.list();
+		projectTaskList = query.list();*/
+		Project project = findProjectById(projectId);
+		projectTaskList = project.getTaskList();
 		return projectTaskList;
 	}
 }

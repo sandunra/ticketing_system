@@ -28,9 +28,9 @@
 		<c:forEach items="${tasks}" var="task">
 			<tr>
 				<td><a href="<c:url value='/task-${task.id}/edit' />">${task.id}</a></td>
-				<td>>${task.title}</td>
+				<td>${task.title}</td>
 				<td>${task.description}</td>
-				<td>>${task.assignedHours}</td>
+				<td>${task.assignedHours}</td>
 				<td>${task.employee.name}</td>
 				<td>${task.comment}</td>
 				<td>${task.spentHours}</td>
@@ -40,6 +40,6 @@
 		</c:forEach>
 	</table>
 	<br/>
-	<a href="<c:url value='/task/new' />">Add New Task</a>
+	<a href="<c:url value='/project-${projectId}/task/new' />">Add New Task</a>
 </body>
 </html>

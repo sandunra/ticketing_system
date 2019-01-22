@@ -25,7 +25,7 @@ public class Project implements Serializable {
     @Column(name="client")
     private String client;
 
-    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     private List<Task> taskList;
 
     public Project() {

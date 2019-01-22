@@ -35,7 +35,7 @@
     <!--Hibernate configurations-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/ticketing_system?createDatabaseIfNotExist=true&amp;useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/ts?createDatabaseIfNotExist=true&amp;useUnicode=yes&amp;characterEncoding=UTF-8&amp;useSSL=false"/>
         <property name="user" value="root"/>
         <property name="password" value="password"/>
         <!--C3P0 properties-->

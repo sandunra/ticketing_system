@@ -56,8 +56,8 @@ public class ProjectServiceImpl implements ProjectService {
 		return ( project == null || ((id != null) && (project.getId() == id)));
 	}
 
-	public List<Task> getProjectTasks(Project project) {
-		return dao.getProjectTasks(project );
+	public List<Task> getProjectTasks(int projectId) {
+		return dao.getProjectTasks(projectId);
 	}
 	
 }

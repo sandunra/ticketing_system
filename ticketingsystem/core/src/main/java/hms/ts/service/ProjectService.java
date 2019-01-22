@@ -21,6 +21,6 @@ public interface ProjectService {
 
 	boolean isProjectIdUnique(Integer id);
 
-	List<Task> getProjectTasks(Project project);
+	List<Task> getProjectTasks(int projectId);
 	
 }
