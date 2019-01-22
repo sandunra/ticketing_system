@@ -1,9 +1,7 @@
 package hms.ts.service;
 
 import hms.ts.model.Employee;
-import hms.ts.model.Role;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface EmployeeService {
@@ -21,7 +19,5 @@ public interface EmployeeService {
 	Employee findEmployeeById(int id);
 
 	boolean isEmployeeIdUnique(Integer id);
-
-	ArrayList<Role> getAllRoles();
 	
 }

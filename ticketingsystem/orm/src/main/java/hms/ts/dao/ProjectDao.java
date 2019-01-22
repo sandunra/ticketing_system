@@ -1,6 +1,7 @@
 package hms.ts.dao;
 
 import hms.ts.model.Project;
+import hms.ts.model.Task;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface ProjectDao {
 	List<Project> findAllProjects();
 
 	Project findProjectById(int id);
+
+	List<Task> getProjectTasks(Project project);
 
 }

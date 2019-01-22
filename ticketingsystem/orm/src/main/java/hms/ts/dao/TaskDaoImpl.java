@@ -1,11 +1,7 @@
 package hms.ts.dao;
 
-import hms.ts.model.Employee;
-import hms.ts.model.Project;
 import hms.ts.model.Task;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -44,27 +40,4 @@ public class TaskDaoImpl extends AbstractDao<Integer, Task> implements TaskDao {
 		return employeeTaskList;
 	}
 
-	/*public List<Employee> listAllEmployees() {
-		List<Employee> result = null;
-		try{
-			Query query = getSession().createQuery("SELECT E.name FROM Employee E");
-			result = query.list();
-			query.executeUpdate();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
-	}*/
-
-	public List<Project> listAllProjects() {
-		List<Project> result = null;
-		try{
-			Query query = getSession().createQuery("SELECT P.title FROM Project P");
-			result = query.list();
-			query.executeUpdate();
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
-	}
 }

@@ -1,6 +1,8 @@
 package hms.ts.service;
 
 import hms.ts.model.Project;
+import hms.ts.model.Task;
+
 import java.util.List;
 
 public interface ProjectService {
@@ -18,5 +20,7 @@ public interface ProjectService {
 	Project findProjectById(int id);
 
 	boolean isProjectIdUnique(Integer id);
+
+	List<Task> getProjectTasks(Project project);
 	
 }

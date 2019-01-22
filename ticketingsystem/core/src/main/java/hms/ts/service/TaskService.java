@@ -1,7 +1,5 @@
 package hms.ts.service;
 
-import hms.ts.model.Employee;
-import hms.ts.model.Project;
 import hms.ts.model.Task;
 
 import java.util.List;

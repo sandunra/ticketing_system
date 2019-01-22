@@ -1,14 +1,12 @@
 package hms.ts.dao;
 
 import hms.ts.model.Employee;
-import hms.ts.model.Role;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.util.*;
+import java.util.List;
 
 @Repository("employeeDao")
 public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements EmployeeDao {
@@ -46,11 +44,6 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("id", id));
 		return (Employee) criteria.uniqueResult();
-	}
-
-	public ArrayList<Role> findAllRoles() {
-		Criteria criteria = createEntityCriteria();
-		return (ArrayList<Role>) criteria.list();
 	}
 
 }

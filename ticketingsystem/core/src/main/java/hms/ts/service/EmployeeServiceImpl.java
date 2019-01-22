@@ -2,12 +2,10 @@ package hms.ts.service;
 
 import hms.ts.dao.EmployeeDao;
 import hms.ts.model.Employee;
-import hms.ts.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service("employeeService")
@@ -69,10 +67,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean isEmployeeIdUnique(Integer id) {
 		Employee employee = findEmployeeById(id);
 		return ( employee == null || ((id != null) && (employee.getId() == id)));
-	}
-
-	public ArrayList<Role> getAllRoles() {
-		return dao.findAllRoles();
 	}
 
 	/*protected Map getRoleList(HttpServletRequest request) throws Exception {

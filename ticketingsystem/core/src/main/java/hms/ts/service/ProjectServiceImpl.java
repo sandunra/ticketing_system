@@ -2,6 +2,7 @@ package hms.ts.service;
 
 import hms.ts.dao.ProjectDao;
 import hms.ts.model.Project;
+import hms.ts.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +54,10 @@ public class ProjectServiceImpl implements ProjectService {
 	public boolean isProjectIdUnique(Integer id) {
 		Project project = findProjectById(id);
 		return ( project == null || ((id != null) && (project.getId() == id)));
+	}
+
+	public List<Task> getProjectTasks(Project project) {
+		return dao.getProjectTasks(project );
 	}
 	
 }

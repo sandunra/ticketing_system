@@ -1,6 +1,7 @@
 package hms.ts.dao;
 
 import hms.ts.model.Project;
+import hms.ts.model.Task;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -35,5 +36,14 @@ public class ProjectDaoImpl extends AbstractDao<Integer, Project> implements Pro
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("id", id));
 		return (Project) criteria.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Task> getProjectTasks(Project project) {
+		List<Task> projectTaskList = null;
+		Query query = getSession().createQuery("from Task where project = :project ");
+		query.setParameter("project", project);
+		projectTaskList = query.list();
+		return projectTaskList;
 	}
 }
