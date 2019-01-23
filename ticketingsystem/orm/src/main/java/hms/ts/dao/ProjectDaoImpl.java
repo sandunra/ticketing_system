@@ -28,7 +28,9 @@ public class ProjectDaoImpl extends AbstractDao<Integer, Project> implements Pro
 
 	@SuppressWarnings("unchecked")
 	public List<Project> findAllProjects() {
-		Criteria criteria = createEntityCriteria();
+		Criteria criteria = (Criteria) getSession().
+				createCriteria(Project.class).
+				setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return (List<Project>) criteria.list();
 	}
 

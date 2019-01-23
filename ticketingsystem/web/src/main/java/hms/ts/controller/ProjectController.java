@@ -116,6 +116,7 @@ public class ProjectController {
 
 		projectService.updateProject(project);
 
+		model.addAttribute("from", false);
 		model.addAttribute("success", "Project " + project.getTitle()	+ " updated successfully");
 		return "success";
 	}

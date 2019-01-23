@@ -9,6 +9,6 @@
 <body>
 <jsp:include page="menu.jsp" />
 	Dear <strong>${pageContext.request.userPrincipal.name}</strong>, Welcome to Admin Page.
-	<a href="<c:url value="/logout" />">Logout</a>
+	<%--<a href="<c:url value="/logout" />">Logout</a>--%>
 </body>
 </html>

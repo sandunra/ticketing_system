@@ -7,10 +7,10 @@
   <a href="${pageContext.request.contextPath}/employee/">Employee</a>
   | &nbsp;
 
-  <c:if test="${pageContext.request.userPrincipal.name != null}">
-    | &nbsp;
+  <%--<c:if test="${pageContext.request.userPrincipal.name != null}">--%>
+     &nbsp;
     <a href="${pageContext.request.contextPath}/logout">Logout</a>
 
-  </c:if>
+  <%--</c:if>--%>
 
 </div>

@@ -138,6 +138,7 @@ public class UserController {
 
 		employeeService.updateEmployee(employee);
 
+		model.addAttribute("from", true);
 		model.addAttribute("success", "Employee " + employee.getName()	+ " updated successfully");
 		return "success";
 	}

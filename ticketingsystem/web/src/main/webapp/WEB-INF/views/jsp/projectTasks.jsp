@@ -19,14 +19,11 @@
 <body>
 <jsp:include page="menu.jsp" />
 
-	if(${tasks} != null}
-		$Project project = ${tasks.indexOf(0)}
-
-	<h2>${tasks.get(0).project.title} Project Task List</h2>
+	<h2>${project.title}  Project Task List</h2>
 
 
 	<table>
-		<td>ID</td><td>TITLE</td><td>DESCRIPTION</td><td>ASSIGNED HOURS</td><td>ASSIGNEE</td><td>COMMENT</td><td>SPENT HOURS</td><td>STATUS</td><td></td>
+		<td>TASK ID</td><td>TITLE</td><td>DESCRIPTION</td><td>ASSIGNED HOURS</td><td>ASSIGNEE</td><td>COMMENT</td><td>SPENT HOURS</td><td>STATUS</td>
 		<tr>
 		</tr>
 		<c:forEach items="${tasks}" var="task">

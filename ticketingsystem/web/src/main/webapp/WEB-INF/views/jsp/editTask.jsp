@@ -20,8 +20,9 @@
 
 <body>
 
-<h2>Add Task - ${project.title} Project</h2>
-	<form:form method="POST" modelAttribute="task" action="/project-${project.id}/task-list">
+	<h2>Edit Task</h2>
+
+	<form:form method="POST" modelAttribute="task" action="/task-${id}/edit">
 		<form:input type="hidden" path="id" id="id"/>
 		<table>
 			<tr>
@@ -86,7 +87,7 @@
 	
 			<tr>
 				<td colspan="3">
-					<input type="submit" value="Add"/>
+					<input type="submit" value="Update"/>
 				</td>
 			</tr>
 		</table>

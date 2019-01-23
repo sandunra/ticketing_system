@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
@@ -35,15 +38,18 @@ public class TaskController {
 	@Autowired
 	MessageSource messageSource;
 
+	@PersistenceContext
+	private EntityManager entityManager;
+
 	/*
 	 * This method will list all existing tasks related with selected project.
 	 */
-	@RequestMapping(value = { "project-{id}/task-list" }, method = RequestMethod.GET)
-	public String listProjectTasks(@PathVariable Integer id, ModelMap model) {
+	@RequestMapping(value = { "project-{projectId}/task-list" }, method = RequestMethod.GET)
+	public String listProjectTasks(@PathVariable Integer projectId, ModelMap model) {
 
-		List<Task> tasks = projectService.getProjectTasks(id);
+		List<Task> tasks = projectService.getProjectTasks(projectId);
 		model.addAttribute("tasks", tasks);
-		model.addAttribute("projectId", id);
+		model.addAttribute("project", projectService.findProjectById(projectId));
 		model.addAttribute("admin", true);
 		return "projectTasks";
 	}
@@ -63,12 +69,11 @@ public class TaskController {
 	/*
 	 * This method will provide the medium to add a new project.
 	 */
-	@RequestMapping(value = { "project-{id}/task/new" }, method = RequestMethod.GET)
-	public String newTask(@PathVariable Integer id, ModelMap model) {
+	@RequestMapping(value = { "project-{projectId}/task/new" }, method = RequestMethod.GET)
+	public String newTask(@PathVariable Integer projectId, ModelMap model) {
 		Task task = new Task();
 		model.addAttribute("task", task);
-		model.addAttribute("edit", false);
-		model.addAttribute("id", id);
+		model.addAttribute("project", projectService.findProjectById(projectId));
 		return "addTask";
 	}
 
@@ -77,6 +82,7 @@ public class TaskController {
 	 * saving employee in database. It also validates the user input
 	 */
 
+	@Transactional
 	@RequestMapping(value = "project-{id}/task-list", method = RequestMethod.POST)
 	public String saveTask(@PathVariable Integer id, ModelMap model, @RequestParam("title") String title,
 								   @RequestParam("description") String description,
@@ -99,30 +105,63 @@ public class TaskController {
 
 		taskService.saveTask(task);
 
-		List<Task> tasks = projectService.getProjectTasks(id);
-
+		/*List<Task> tasks = projectService.getProjectTasks(id);
 
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("projectId", id);
-		model.addAttribute("admin", true);
+		model.addAttribute("admin", true);*/
 
-		return "projectTasks";
+		model.addAttribute("id", id);
+		model.addAttribute("success", "Task added successfully");
+		model.addAttribute("task", true);
+
+		return "success";
 	}
 
-	public String saveTask(@Valid Task task, BindingResult result, ModelMap model) {
+	@Transactional
+	@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.POST)
+	public String updateTask(@Valid Task task, @PathVariable Integer id, ModelMap model,
+							 @RequestParam("title") String title,
+						   @RequestParam("description") String description,
+						   @RequestParam("project") int projectId,
+						   @RequestParam("employee") int employeeId,
+						   @RequestParam("assignedHours") int assignedHours,
+						   @RequestParam("spentHours") int spentHours,
+						   @RequestParam("status") int status,
+						   @RequestParam("comment") String comment) {
+
+
+		task.setTitle(title);
+		task.setDescription(description);
+		task.setProject(projectService.findProjectById(projectId));
+		task.setEmployee(employeeService.findEmployeeById(employeeId));
+		task.setAssignedHours(assignedHours);
+		task.setSpentHours(spentHours);
+		task.setComment(comment);
+		task.setStatus(status);
+
+		taskService.updateTask(task);
+		model.addAttribute("id", task.getProject().getId());
+		model.addAttribute("task", true);
+		model.addAttribute("success", "Task " + task.getTitle()	+ " updated successfully");
+		return "success";
+	}
+
+
+	/*public String saveTask(@Valid Task task, BindingResult result, ModelMap model) {
 
 		if (result.hasErrors()) {
 			return "addTask";
 		}
 
-		/*
+		*//*
 		 * Preferred way to achieve uniqueness of field [ssn] should be implementing custom @Unique annotation 
 		 * and applying it on field [ssn] of Model class [Employee].
 		 * 
 		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
 		 * framework as well while still using internationalized messages.
 		 * 
-		 */
+		 *//*
 		if(!taskService.isTaskIdUnique(task.getId())){
 			FieldError ssnError =new FieldError("task","id",messageSource.getMessage("non.unique.id", new Integer[]{task.getId()}, Locale.getDefault()));
 		    result.addError(ssnError);
@@ -134,43 +173,44 @@ public class TaskController {
 		model.addAttribute("success", "Task " + task.getTitle() + " added successfully");
 		model.addAttribute("from", false);
 		return "success";
-	}
+	}*/
 
 
 	/*
 	 * This method will provide the medium to update an existing employee.
 	 */
 	@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.GET)
-	public String editProject(@PathVariable Integer id, ModelMap model) {
+	public String editTask(@PathVariable Integer id, ModelMap model) {
 		Task task = taskService.findById(id);
 		model.addAttribute("task", task);
-		model.addAttribute("edit", true);
-		return "addTask";
+		model.addAttribute("project", task.getProject());
+		return "editTask";
 	}
 	
 	/*
 	 * This method will be called on form submission, handling POST request for
 	 * updating employee in database. It also validates the user input
 	 */
-	@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.POST)
+	/*@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.POST)
 	public String updateTask(@Valid Task task, BindingResult result,
 			ModelMap model, @PathVariable String id) {
 
 		if (result.hasErrors()) {
-			return "addTask";
+			return "editTask";
 		}
 
 		if(!taskService.isTaskIdUnique(task.getId())){
 			FieldError idError =new FieldError("task","id",messageSource.getMessage("non.unique.id", new Integer[]{task.getId()}, Locale.getDefault()));
 		    result.addError(idError);
-			return "addTask";
+			return "editTask";
 		}
 
 		taskService.updateTask(task);
 
+		model.addAttribute("task", true);
 		model.addAttribute("success", "Task " + task.getTitle()	+ " updated successfully");
 		return "success";
-	}
+	}*/
 	
 	/*
 	 * This method will delete an employee by it's SSN value.
