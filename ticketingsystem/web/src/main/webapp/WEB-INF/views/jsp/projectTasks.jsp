@@ -17,8 +17,12 @@
 
 
 <body>
+<jsp:include page="menu.jsp" />
 
-	<h2>${projectId} Project Task List</h2>
+	if(${tasks} != null}
+		$Project project = ${tasks.indexOf(0)}
+
+	<h2>${tasks.get(0).project.title} Project Task List</h2>
 
 
 	<table>

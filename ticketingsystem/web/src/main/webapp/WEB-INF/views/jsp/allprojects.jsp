@@ -17,6 +17,8 @@
 
 
 <body>
+<jsp:include page="menu.jsp" />
+
 	<h2>List of Projects</h2>
 	<table>
 		<td>ID</td><td>TITLE</td><td>DESCRIPTION</td><td>TYPE</td><td>CLIENT</td><td></td>

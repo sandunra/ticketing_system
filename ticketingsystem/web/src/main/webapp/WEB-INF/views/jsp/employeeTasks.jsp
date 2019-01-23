@@ -17,6 +17,8 @@
 
 
 <body>
+<jsp:include page="menu.jsp" />
+
 	<h2>List of Tasks</h2>
 	<table>
 		<td>ID</td><td>TITLE</td><td>PROJECT</td><td>DESCRIPTION</td><td>ASSIGNED HOURS</td><td>COMMENT</td><td>SPENT HOURS</td><td>STATUS</td><td></td>

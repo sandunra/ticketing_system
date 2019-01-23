@@ -16,6 +16,8 @@
 </head>
 
 <body>
+<jsp:include page="menu.jsp" />
+
 	<h2>List of Employees</h2>	
 	<table>
 		<tr>

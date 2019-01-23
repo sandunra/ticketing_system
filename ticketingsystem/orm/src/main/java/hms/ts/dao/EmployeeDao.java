@@ -16,4 +16,6 @@ public interface EmployeeDao {
 
 	Employee findEmployeeById(int id);
 
+	Employee findEmployeeByUsername(String userName) ;
+
 }

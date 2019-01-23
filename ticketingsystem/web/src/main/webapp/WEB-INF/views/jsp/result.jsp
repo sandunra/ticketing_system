@@ -11,7 +11,7 @@
 	<body>
 		<div class="container">
 			<h3 id="output_header" class="text-success"><%= request.getAttribute("output") %></h3>
-			<a href="<c:url value='/user/logout' />">LogOut</a>
+			<a href="<c:url value='/logout' />">LogOut</a>
 		</div>	    
 	</body>
 </html>

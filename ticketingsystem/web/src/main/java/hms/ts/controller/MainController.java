@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Controller
 public class MainController {
@@ -27,11 +29,12 @@ public class MainController {
 		return "admin";
 	}
 
-	/*@RequestMapping(value = "/employee", method = RequestMethod.GET)
-	public String dbaPage(ModelMap model) {
-		model.addAttribute("user", getUser());
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public String userPage(ModelMap model, Principal principal) {
+		String userName = principal.getName();
+		model.addAttribute("user", userName);
 		return "user";
-	}*/
+	}
 
 	@RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
 	public String accessDeniedPage(ModelMap model) {
@@ -47,8 +50,10 @@ public class MainController {
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		HttpSession session = request.getSession();
 		if (auth != null){    
 			new SecurityContextLogoutHandler().logout(request, response, auth);
+			session.invalidate();
 		}
 		return "redirect:/?logout";//You can redirect wherever you want, but generally it's a good idea to show login screen again.
 	}

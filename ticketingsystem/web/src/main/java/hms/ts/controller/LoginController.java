@@ -41,7 +41,7 @@ public class LoginController {
 				return "admin";
 			}
 			model.addAttribute("greeting", "Hi, Welcome to mysite");
-			return "welcome";
+			return "user";
 		} else {
 			msg = "Invalid credentials";
 			return "redirect:/?error";
