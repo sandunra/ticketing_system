@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+		 pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -8,22 +9,30 @@
 		body {font-family: Arial, Helvetica, sans-serif;}
 		* {box-sizing: border-box;}
 
+		tr:first-child{
+			font-weight: bold;
+			background-color: #C6C9C4;
+		}
+
 		/* Button used to open the contact form - fixed at the bottom of the page */
 		.open-button {
-			background-color: #555;
+			background-color: #b09168;
 			color: white;
-			padding: 16px 20px;
+			padding: 3px 20px;
 			border: none;
 			cursor: pointer;
 			opacity: 0.8;
+			border-radius: 10px;
 		}
 
 		/* The popup form - hidden by default */
 		.form-popup {
 			display: none;
-			position: absolute;
 			border: 3px solid #f1f1f1;
 			z-index: 9;
+			position: absolute;
+			top: 30%;
+			left: 30%;
 		}
 
 		/* Add styles to the form container */
@@ -34,7 +43,7 @@
 		}
 
 		/* Full-width input fields */
-		.form-container input[type=text], .form-container input[type=password] {
+		.form-container input[type=number], .form-container select {
 			width: 100%;
 			padding: 15px;
 			margin: 5px 0 22px 0;
@@ -43,7 +52,7 @@
 		}
 
 		/* When the inputs get focus, do something */
-		.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+		.form-container input[type=number], .form-container select:focus {
 			background-color: #ddd;
 			outline: none;
 		}
@@ -57,6 +66,13 @@
 			cursor: pointer;
 			width: 100%;
 			opacity: 0.8;
+		}
+
+		.form-container label {
+			color: #0b0b0b;
+			padding: 26px 0px;
+			border: none;
+			width: 100%;
 		}
 
 		/* Add a red background color to the cancel button */
@@ -110,7 +126,7 @@
 			</c:choose>
 
 			<tr>
-				<td><a href="<c:url value='/task-${task.id}/edit' />">${task.id}</a></td>
+				<td><a href="<c:url value='/project-${project.id}/task-${task.id}/edit' />">${task.id}</a></td>
 				<td>${task.title}</td>
 				<td>${task.description}</td>
 				<td>${task.assignedHours}</td>
@@ -118,35 +134,41 @@
 				<td>${task.comment}</td>
 				<td>${task.spentHours}</td>
 				<td><%=status%></td>
-				<td><a href="<c:url value='/task-${task.id}/delete' />">delete</a></td>
-				<td><button class="open-button" onclick="openForm()">Open Form</button></td>
+				<td><a href="<c:url value='/project-${project.id}/task-${task.id}/delete' />">delete</a></td>
+				<td><button class="open-button" onclick="openForm( ${task.id} )">Assign Task</button></td>
 			</tr>
 		</c:forEach>
 	</table>
 	<br/>
-
+	<% Integer taskId;%>
 	<div class="form-popup" id="myForm">
-		<form action="/action_page.php" class="form-container">
-			<h1>Login</h1>
 
-			<label for="email"><b>Email</b></label>
-			<input type="text" placeholder="Enter Email" name="email" required>
+		<form id="formAssignTask" modelAttribute="task" class="form-container" method="post" role="form" action="<c:url value="/project/task/assign"/>">
+			<input type="hidden" path="id" name = "id" id="id"/>
+			<label for="assignee">Assignee</label>
+			<select id="assignee" name="assignee">
+				<c:forEach var="employee" items="${employeeList}">
+					<option value="${employee.id}">${employee.name}</option>
+				</c:forEach>
+			</select></br>
 
-			<label for="psw"><b>Password</b></label>
-			<input type="password" placeholder="Enter Password" name="psw" required>
+			<label for="assignHours">Assigned Hours</label>
+			<input type="number" placeholder="Enter Assign hours for task" id="assignHours" name="assignHours" required>
 
-			<button type="submit" class="btn">Login</button>
+			<button type="submit" class="btn">Assign Task</button>
 			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
 		</form>
 	</div>
 
 	<script>
-		function openForm() {
+		function openForm(taskId) {
 			document.getElementById("myForm").style.display = "block";
+			document.getElementById('id').value = taskId;
 		}
 
 		function closeForm() {
 			document.getElementById("myForm").style.display = "none";
+			document.getElementById("myForm").onmouseout= false;
 		}
 	</script>
 

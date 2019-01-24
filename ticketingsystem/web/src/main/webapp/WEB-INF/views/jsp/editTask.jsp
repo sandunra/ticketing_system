@@ -22,8 +22,9 @@
 
 	<h2>Edit Task</h2>
 
-	<form:form method="POST" modelAttribute="task">
+	<form:form method="POST" modelAttribute="task" action="/project/task/edit">
 		<form:input type="hidden" path="id" id="id"/>
+		<form:input type="hidden" path="project.id" id="project"/>
 		<table>
 			<tr>
 				<td><label for="title">Title: </label> </td>
@@ -37,7 +38,7 @@
 				<td><form:errors path="description" cssClass="error"/></td>
 		    </tr>
 
-			<tr>
+			<%--<tr>
 				<td><label for="project">Project: </label> </td>
 				<td><form:select path="project" id="project" name="project">
 					<c:forEach items="${projectList}" var="projects">
@@ -45,13 +46,22 @@
 					</c:forEach>
 				</form:select></td>
 				<td><form:errors path="project" cssClass="error"/></td>
-			</tr>
+			</tr>--%>
 
 			<tr>
 				<td><label for="employee">Assignee: </label> </td>
 				<td><form:select path="employee" id="employee" name="employee">
 					<c:forEach items="${employeeList}" var="employee">
-						<option value="${employee.id}" >${employee.name}</option>
+
+						<option value="<c:out value='${employee.id}' />"
+								<c:if test="${param.selectValue == employee.id})"> selected </c:if>  >
+							<c:out value="${employee.id}" />
+						</option>
+
+						<%--<option value="${employee.id}" >
+							<c:if test='${param.selectValue == currentOption}'> selected </c:if>
+							${employee.name}
+						</option>--%>
 					</c:forEach>
 				</form:select></td>
 				<td><form:errors path="employee" cssClass="error"/></td>

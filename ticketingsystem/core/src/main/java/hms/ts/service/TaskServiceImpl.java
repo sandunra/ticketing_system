@@ -43,6 +43,15 @@ public class TaskServiceImpl implements TaskService {
 		}
 	}
 
+	public void assignAndUpdateTask(Task task) {
+		Task entity = dao.findTaskById(task.getId());
+		if(entity!=null){
+			entity.setEmployee(task.getEmployee());
+			entity.setAssignedHours(task.getAssignedHours());
+			entity.setStatus(task.getStatus());
+		}
+	}
+
 	public void deleteTaskById(int id) {
 		dao.deleteTaskById(id);
 	}

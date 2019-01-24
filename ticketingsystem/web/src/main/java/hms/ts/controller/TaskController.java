@@ -103,15 +103,15 @@ public class TaskController {
 		return "success";
 	}
 
-	@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.GET)
-	public String editTask(@PathVariable Integer id, ModelMap model) {
+	@RequestMapping(value = { "project-{projectId}/task-{id}/edit" }, method = RequestMethod.GET)
+	public String editTask(@PathVariable Integer projectId, @PathVariable Integer id, ModelMap model) {
 		Task task = taskService.findTaskById(id);
 		model.addAttribute("task", task);
-		model.addAttribute("project", task.getProject());
+		model.addAttribute("project", projectService.findProjectById(projectId));
 		return "editTask";
 	}
 
-	@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.POST)
+	/*@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.POST)
 	public String updateTask(@Valid Task task, BindingResult result,
 							 ModelMap model, @PathVariable String id) {
 
@@ -130,21 +130,23 @@ public class TaskController {
 		model.addAttribute("task", true);
 		model.addAttribute("success", "Task " + task.getTitle()	+ " updated successfully");
 		return "success";
-	}
+	}*/
 
-	/*@Transactional
-	@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.POST)
-	public String updateTask(@Valid Task task, @PathVariable Integer id, ModelMap model,
+	@Transactional
+	@RequestMapping(value = { "project/task/edit" }, method = RequestMethod.POST)
+	public String updateTask( ModelMap model,
+							 @RequestParam("id") int taskId,
+							 @RequestParam("project.id") int projectId,
 							 @RequestParam("title") String title,
 						     @RequestParam("description") String description,
-						     @RequestParam("project") int projectId,
 						     @RequestParam("employee") int employeeId,
 						     @RequestParam("assignedHours") int assignedHours,
 						     @RequestParam("spentHours") int spentHours,
 						     @RequestParam("status") int status,
 						     @RequestParam("comment") String comment) {
 
-
+		Task task = new Task();
+		task.setId(taskId);
 		task.setTitle(title);
 		task.setDescription(description);
 		task.setProject(projectService.findProjectById(projectId));
@@ -155,11 +157,30 @@ public class TaskController {
 		task.setStatus(status);
 
 		taskService.updateTask(task);
-		model.addAttribute("id", task.getProject().getId());
+		model.addAttribute("id", projectId);
 		model.addAttribute("task", true);
 		model.addAttribute("success", "Task " + task.getTitle()	+ " updated successfully");
 		return "success";
-	}*/
+	}
+
+	@RequestMapping(value = { "project/task/assign" }, method = RequestMethod.POST)
+	public String assignTask( ModelMap model,
+							  @RequestParam("id") int taskId,
+							  @RequestParam("assignee") int employeeId,
+							  @RequestParam("assignHours") int assignedHours) {
+
+		Task task = taskService.findTaskById(taskId);
+		task.setId(taskId);
+		task.setEmployee(employeeService.findEmployeeById(employeeId));
+		task.setAssignedHours(assignedHours);
+		task.setStatus(1);
+
+		taskService.assignAndUpdateTask(task);
+		model.addAttribute("id", task.getProject().getId());
+		model.addAttribute("task", true);
+		model.addAttribute("success", "Task " + task.getTitle()	+ " assigned to " +employeeService.findEmployeeById(employeeId).getName() + "successfully");
+		return "success";
+	}
 
 
 	/*public String saveTask(@Valid Task task, BindingResult result, ModelMap model) {

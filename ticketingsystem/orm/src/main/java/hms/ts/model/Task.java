@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Task implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
@@ -23,7 +23,7 @@ public class Task implements Serializable {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="employee_id")
+    @JoinColumn(name="employee_id", nullable = true)
     private Employee employee;
 
     @Column(name="assigned_hours")
