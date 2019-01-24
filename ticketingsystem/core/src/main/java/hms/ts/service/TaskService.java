@@ -14,6 +14,8 @@ public interface TaskService {
 	
 	void deleteTaskById(int id);
 
+	Task findTaskById(int id);
+
 	List<Task> findAllTaskByProjectId(int projectId);
 
 	List<Task> findAllTaskByEmployeeId(int empId);

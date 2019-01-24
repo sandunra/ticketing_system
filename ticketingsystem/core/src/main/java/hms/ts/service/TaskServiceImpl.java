@@ -1,8 +1,6 @@
 package hms.ts.service;
 
 import hms.ts.dao.TaskDao;
-import hms.ts.model.Employee;
-import hms.ts.model.Project;
 import hms.ts.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,7 @@ public class TaskServiceImpl implements TaskService {
 	 * It will be updated in db once transaction ends. 
 	 */
 	public void updateTask(Task task) {
-		Task entity = dao.findById(task.getId());
+		Task entity = dao.findTaskById(task.getId());
 		if(entity!=null){
 			entity.setComment(task.getComment());
 			entity.setDescription(task.getDescription());
@@ -48,7 +46,11 @@ public class TaskServiceImpl implements TaskService {
 	public void deleteTaskById(int id) {
 		dao.deleteTaskById(id);
 	}
-	
+
+	public Task findTaskById(int id) {
+		return dao.findTaskById(id);
+	}
+
 	public List<Task> findAllTaskByProjectId(int projectId) {
 		return dao.findAllTaskByProjectId(projectId);
 	}

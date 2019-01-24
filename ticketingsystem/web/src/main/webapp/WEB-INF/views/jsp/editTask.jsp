@@ -22,7 +22,7 @@
 
 	<h2>Edit Task</h2>
 
-	<form:form method="POST" modelAttribute="task" action="/task-${id}/edit">
+	<form:form method="POST" modelAttribute="task">
 		<form:input type="hidden" path="id" id="id"/>
 		<table>
 			<tr>
@@ -78,9 +78,13 @@
 			<tr>
 				<td><label for="status">Status: </label> </td>
 				<td><form:select path="status" id="status" name="status">
-					<form:option value = '0' label = "Select"/>
-					<form:option value='1' label="Ongoing"/>
-					<form:option value='2' label="Complete"/>
+					<option value = '0' >Select status</option>
+					<option value = '1' >Not assigned yet</option>
+					<option value = '2' >Assigned</option>
+					<option value = '2' >Accept</option>
+					<option value = '3' >Ongoing</option>
+					<option value = '4' >Terminate</option>
+					<option value = '0' >Complete</option>
 				</form:select></td>
 				<td><form:errors path="status" cssClass="error"/></td>
 			</tr>

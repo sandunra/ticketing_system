@@ -6,6 +6,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Registration Confirmation Page</title>
+	<style>
+		a{
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+	</style>
 </head>
 <body>
 <jsp:include page="menu.jsp" />
@@ -15,14 +21,14 @@
 
 	Go back to
 	<c:choose>
-		<c:when test="${from}">
-			<a href="<c:url value='/employee/list' />">List of All Employees</a>
+		<c:when test="${employee}">
+			<a href="<c:url value='/employee/list' />">List of Employees</a>
 		</c:when>
 		<c:when test="${task}">
-			<a href="<c:url value='/project-${id}/task-list' />">List of All Tasks</a>
+			<a href="<c:url value='/project-${id}/task-list' />">List of Tasks</a>
 		</c:when>
 		<c:otherwise>
-			<a href="<c:url value='/project/list' />">List of All Projects</a>
+			<a href="<c:url value='/project/list' />">List of Projects</a>
 		</c:otherwise>
 	</c:choose>
 	

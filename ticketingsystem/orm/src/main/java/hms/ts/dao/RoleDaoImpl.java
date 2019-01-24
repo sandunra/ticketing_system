@@ -1,13 +1,12 @@
 package hms.ts.dao;
 
-import hms.ts.model.Employee;
 import hms.ts.model.Role;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository("roleDao")
@@ -29,7 +28,9 @@ public class RoleDaoImpl extends AbstractDao<Integer, Role> implements RoleDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Role> findAllRoles() {
-		Criteria criteria = createEntityCriteria();
+		Criteria criteria = (Criteria) getSession().
+				createCriteria(Role.class).
+				setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).addOrder(Order.asc("id"));
 		return (List<Role>) criteria.list();
 	}
 

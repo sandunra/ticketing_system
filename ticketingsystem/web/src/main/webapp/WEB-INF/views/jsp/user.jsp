@@ -5,6 +5,13 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Admin page</title>
+
+	<style>
+		a{
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+	</style>
 </head>
 <body>
 <jsp:include page="menu.jsp" />

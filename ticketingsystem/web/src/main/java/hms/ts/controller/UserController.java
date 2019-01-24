@@ -29,9 +29,7 @@ public class UserController {
 	@Autowired
 	MessageSource messageSource;
 
-	/*
-	 * This method will list all existing employees.
-	 */
+
 	@RequestMapping(value = { "", "/list" }, method = RequestMethod.GET)
 	public String listEmployees(ModelMap model) {
 
@@ -40,9 +38,6 @@ public class UserController {
 		return "allemployees";
 	}
 
-	/*
-	 * This method will provide the medium to add a new employee.
-	 */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
 	public String newEmployee(ModelMap model) {
 		Employee employee = new Employee();
@@ -67,8 +62,8 @@ public class UserController {
 
 		employeeService.saveEmployee(employee);
 
-		model.addAttribute("success", "Employee " + employee.getName() + " registered successfully");
-		model.addAttribute("from", true);
+		model.addAttribute("success", "Employee " + employee.getName() + " added successfully");
+		model.addAttribute("employee", true);
 		return "success";
 	}
 
@@ -124,13 +119,13 @@ public class UserController {
 	 */
 	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.POST)
 	public String updateEmployee(@Valid Employee employee, BindingResult result,
-			ModelMap model, @PathVariable String id) {
+			ModelMap model, @PathVariable Integer id) {
 
 		if (result.hasErrors()) {
 			return "addEmployee";
 		}
 
-		if(!employeeService.isEmployeeIdUnique(employee.getId())){
+		if(!employeeService.isEmployeeIdUnique(id)){
 			FieldError idError =new FieldError("employee","id",messageSource.getMessage("non.unique.id", new Integer[]{employee.getId()}, Locale.getDefault()));
 		    result.addError(idError);
 			return "addEmployee";
@@ -138,14 +133,11 @@ public class UserController {
 
 		employeeService.updateEmployee(employee);
 
-		model.addAttribute("from", true);
+		model.addAttribute("employee", true);
 		model.addAttribute("success", "Employee " + employee.getName()	+ " updated successfully");
 		return "success";
 	}
-	
-	/*
-	 * This method will delete an employee by it's SSN value.
-	 */
+
 	@RequestMapping(value = { "/delete-{id}" }, method = RequestMethod.GET)
 	public String deleteEmployee(@PathVariable int id) {
 		employeeService.deleteEmployeeById(id);

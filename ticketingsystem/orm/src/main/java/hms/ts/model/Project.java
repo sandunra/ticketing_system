@@ -9,11 +9,11 @@ import java.util.List;
 public class Project implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private int id;
 
-    @Column(name="title", nullable = false)
+    @Column(name="title")
     private String title;
 
     @Column(name="description")
@@ -32,11 +32,12 @@ public class Project implements Serializable {
 
     }
 
-    public Project(String title, String description, String client, String type) {
+    public Project(String title, String description, String type, String client, List<Task> taskList) {
         this.title = title;
         this.description = description;
-        this.client = client;
         this.type = type;
+        this.client = client;
+        this.taskList = taskList;
     }
 
     public int getId() {

@@ -9,12 +9,12 @@ import java.util.List;
 public class Employee implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="role_id", nullable = false)
+    @JoinColumn(name="role_id")
     private Role role;
 
     @Column(name="name", nullable = false)
@@ -36,11 +36,13 @@ public class Employee implements Serializable{
 
     }
 
-    public Employee(String name, String username, String password, String email) {
+    public Employee(Role role, String name, String username, String password, String email, List<Task> taskList) {
+        this.role = role;
         this.name = name;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.taskList = taskList;
     }
 
     public int getId() {

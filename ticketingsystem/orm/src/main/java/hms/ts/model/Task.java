@@ -8,12 +8,12 @@ import java.io.Serializable;
 public class Task implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="project_id", nullable = false)
+    @JoinColumn(name="project_id")
     private Project project;
 
     @Column(name="title", nullable = false)
@@ -23,7 +23,7 @@ public class Task implements Serializable {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name="employee_id",  nullable = false)
+    @JoinColumn(name="employee_id")
     private Employee employee;
 
     @Column(name="assigned_hours")
@@ -42,13 +42,15 @@ public class Task implements Serializable {
 
     }
 
-    public Task( String title, String description,  int assignedHours, int spentHours, String comment, int status) {
+    public Task(Project project, String title, String description, Employee employee, int assignedHours, int spentHours, int status, String comment) {
+        this.project = project;
         this.title = title;
         this.description = description;
+        this.employee = employee;
         this.assignedHours = assignedHours;
         this.spentHours = spentHours;
-        this.comment = comment;
         this.status = status;
+        this.comment = comment;
     }
 
     public int getId() {

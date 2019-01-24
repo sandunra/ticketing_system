@@ -1,7 +1,9 @@
 package hms.ts.dao;
 
 import hms.ts.model.Task;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +23,12 @@ public class TaskDaoImpl extends AbstractDao<Integer, Task> implements TaskDao {
 		Query query = getSession().createSQLQuery("delete from task where id = :id");
 		query.setInteger("id", id);
 		query.executeUpdate();
+	}
+
+	public Task findTaskById(int id) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("id", id));
+		return (Task) criteria.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")

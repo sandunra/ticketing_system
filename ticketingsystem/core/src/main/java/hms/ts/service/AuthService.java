@@ -63,20 +63,4 @@ public class AuthService {
 		return userTags;
 	}
 
-	/*public boolean findUserRole(String uname,String upwd) {
-		log.info("Checking the user in the database");
-		boolean isValidUser = false;
-		String sqlQuery = "from Employee emp where emp.username=? and emp.password=?";
-		try {
-			List<Employee> userObj = (List<Employee>) hibernateTemplate.find(sqlQuery, uname, upwd);
-			if(userObj != null && userObj.size() > 0) {
-				log.info("Id= " + userObj.get(0).getId() + ", Name= " + userObj.get(0).getName() + ", Password= " + userObj.get(0).getPassword());
-				isValidUser = true;
-			}
-		} catch(Exception e) {
-			isValidUser = false;
-			log.error("An error occurred while fetching the user details from the database", e);
-		}
-		return isValidUser;
-	}*/
 }

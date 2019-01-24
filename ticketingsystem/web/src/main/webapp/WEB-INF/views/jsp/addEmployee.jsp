@@ -20,8 +20,15 @@
 
 <body>
 
-	<h2>Add/Edit Employee</h2>
- 
+	<c:choose>
+		<c:when test="${edit}">
+			<h2>Edit Employee</h2>
+		</c:when>
+		<c:otherwise>
+			<h2>Add Employee</h2>
+		</c:otherwise>
+	</c:choose>
+
 	<form:form method="POST" modelAttribute="employee">
 		<form:input type="hidden" path="id" id="id"/>
 		<table>
@@ -70,7 +77,7 @@
 							<input type="submit" value="Update"/>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Register"/>
+							<input type="submit" value="Add"/>
 						</c:otherwise>
 					</c:choose>
 				</td>

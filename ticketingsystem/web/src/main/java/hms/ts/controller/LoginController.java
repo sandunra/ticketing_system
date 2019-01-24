@@ -26,7 +26,7 @@ public class LoginController {
 	private static Logger log = Logger.getLogger(LoginController.class);
 
 	// Checks if the user credentials are valid or not.
-	@RequestMapping(value = "/validate", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String validateUsr(@RequestParam("username")String username,@RequestParam("password")String password, ModelMap model) {
 		String msg = "";
 		Map<String, Boolean> userTags = authenticateService.findUser(username, password);

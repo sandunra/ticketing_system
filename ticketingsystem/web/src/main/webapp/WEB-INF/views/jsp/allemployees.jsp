@@ -11,6 +11,10 @@
 			font-weight: bold;
 			background-color: #C6C9C4;
 		}
+		a{
+			padding-left: 10px;
+			padding-right: 10px;
+		}
 	</style>
 
 </head>
