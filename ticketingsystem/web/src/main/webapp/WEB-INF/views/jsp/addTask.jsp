@@ -36,26 +36,6 @@
 				<td><form:errors path="description" cssClass="error"/></td>
 		    </tr>
 
-			<%--<tr>
-				<td><label for="project">Project: </label> </td>
-				<td><form:select path="project" id="project" name="project">
-					<c:forEach items="${projectList}" var="projects">
-						<option value="${projects.id}" >${projects.title}</option>
-					</c:forEach>
-				</form:select></td>
-				<td><form:errors path="project" cssClass="error"/></td>
-			</tr>--%>
-
-			<%--<tr>
-				<td><label for="employee">Assignee: </label> </td>
-				<td><form:select path="employee" id="employee" name="employee">
-					<c:forEach items="${employeeList}" var="employee">
-						<option value="${employee.id}" >${employee.name}</option>
-					</c:forEach>
-				</form:select></td>
-				<td><form:errors path="employee" cssClass="error"/></td>
-			</tr>--%>
-
 			<tr>
 				<td><label for="assignedHours">Assigned Hours: </label> </td>
 				<td><form:input path="assignedHours" id="assignedHours" name="assignedHours"/></td>
@@ -63,28 +43,15 @@
 			</tr>
 
 			<%--<tr>
-				<td><label for="spentHours">Spent Hours: </label> </td>
-				<td><form:input path="spentHours" id="spentHours" name="spentHours"/></td>
-				<td><form:errors path="spentHours" cssClass="error"/></td>
-			</tr>
-
-			<tr>
-				<td><label for="comment">Comment: </label> </td>
-				<td><form:textarea path="comment" id="comment" name="comment"/></td>
-				<td><form:errors path="comment" cssClass="error"/></td>
-			</tr>
-
-			<tr>
 				<td><label for="status">Status: </label> </td>
-				<td><form:select path="status" id="status" name="status">
-						<option value = '0' >Select status</option>
-						<option value = '1' >Not assigned yet</option>
-						<option value = '2' >Assigned</option>
-						<option value = '2' >Accept</option>
-						<option value = '3' >Ongoing</option>
-						<option value = '4' >Terminate</option>
-						<option value = '0' >Complete</option>
-				</form:select></td>
+				<td>
+					<form:select path="status" id="status" name="status" required="true">
+						<c:forEach items="${taskStatusList}" var="status">
+							<option value="${status.key}" ${status.key == task.status? 'selected="selected"' : ''} > ${status.value}</option>
+						</c:forEach>
+					</form:select>
+				</td>
+				</td>
 				<td><form:errors path="status" cssClass="error"/></td>
 			</tr>--%>
 	

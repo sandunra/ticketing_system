@@ -38,11 +38,9 @@ public class EmployeeDaoImpl extends AbstractDao<Integer, Employee> implements E
 	}
 
 	public Employee findEmployeeByUsername(String userName) {
-		String sql = "Select from " + Employee.class.getName() + " e where e.username = :username ";
-
-		Query query = getSession().createQuery(sql);
-		query.setParameter("username", userName);
-		return (Employee) query.uniqueResult();
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("username", userName));
+		return (Employee) criteria.uniqueResult();
 	}
 
 }

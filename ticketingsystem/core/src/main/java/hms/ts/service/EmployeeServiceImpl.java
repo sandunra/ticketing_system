@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.List;
 
 @Service("employeeService")
@@ -64,9 +66,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return dao.findEmployeeById(id);
 	}
 
-	public boolean isEmployeeIdUnique(Integer id) {
-		Employee employee = findEmployeeById(id);
-		return ( employee == null || ((id != null) && (employee.getId() == id)));
+	public Employee findEmployeeByUsername(String username) {
+		return dao.findEmployeeByUsername(username);
+	}
+
+	public boolean isEmployeeUsernameUnique(String username) {
+		Employee employee = findEmployeeByUsername(username);
+		return ( employee == null || ((username != null) && (employee.getUsername() == username)));
+	}
+
+	public boolean isValidEmailAddress(String email) {
+		boolean result = true;
+		try {
+			InternetAddress emailAddr = new InternetAddress(email);
+			emailAddr.validate();
+		} catch (AddressException ex) {
+			result = false;
+		}
+		return result;
 	}
 
 	/*protected Map getRoleList(HttpServletRequest request) throws Exception {

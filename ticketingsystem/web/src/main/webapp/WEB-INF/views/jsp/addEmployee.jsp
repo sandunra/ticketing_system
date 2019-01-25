@@ -7,7 +7,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Employee Registration Form</title>
+	<title>Ticketing System</title>
 
 <style>
 
@@ -34,23 +34,23 @@
 		<table>
 			<tr>
 				<td><label for="name">Name: </label> </td>
-				<td><form:input path="name" id="name" name="name"/></td>
+				<td><form:input path="name" id="name" name="name" required="true"/></td>
 				<td><form:errors path="name" cssClass="error"/></td>
 		    </tr>
 	    
 			<tr>
 				<td><label for="email">Email: </label> </td>
-				<td><form:input path="email" id="email" name ="email"/></td>
+				<td><form:input path="email" id="email" name ="email" required="true"/></td>
 				<td><form:errors path="email" cssClass="error"/></td>
 		    </tr>
 
 			<tr>
 				<td><label for="role">Role: </label> </td>
 				<td>
-						<form:select path="role" id="role" name="role">
+						<form:select path="role.id" id="role" name="role" required="true">
 							<option value=0 >Select Role</option>
 							<c:forEach items="${roleList}" var="role">
-								<option value="${role.id}" >${role.title}</option>
+								<option value="${role.id}" ${role.id == employee.role.id ? 'selected="selected"' : ''}>${role.title}</option>
 							</c:forEach>
 
 							<%--<form:options items="${roleList}" />--%>
@@ -61,13 +61,13 @@
 
 			<tr>
 				<td><label for="email">Username: </label> </td>
-				<td><form:input path="username" id="email" name="username"/></td>
+				<td><form:input path="username" id="username" name="username" required="true"/></td>
 				<td><form:errors path="username" cssClass="error"/></td>
 			</tr>
 
 			<tr>
 				<td><label for="email">Password: </label> </td>
-				<td><form:password path="password" id="password" name="password"/></td>
+				<td><form:password path="password" id="password" name="password" required="true"/></td>
 				<td><form:errors path="password" cssClass="error"/></td>
 			</tr>
 	

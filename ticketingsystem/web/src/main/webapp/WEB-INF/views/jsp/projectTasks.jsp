@@ -103,19 +103,19 @@
 			<%! String status;%>
 
 			<c:choose>
-				<c:when test="${task.status==0}">
+				<c:when test="${task.status==1}">
 					<% status="Not Assigned yet"; %>
 					<br />
 				</c:when>
-				<c:when test="${task.status==1}">
+				<c:when test="${task.status==2}">
 					<% status="Assigned";%>
 					<br />
 				</c:when>
-				<c:when test="${task.status==0}">
+				<c:when test="${task.status==3}">
 					<% status = "Ongoing"; %>
 					<br />
 				</c:when>
-				<c:when test="${task.status==0}">
+				<c:when test="${task.status==4}">
 					<% status = "Terminate"; %>
 					<br />
 				</c:when>
@@ -135,40 +135,53 @@
 				<td>${task.spentHours}</td>
 				<td><%=status%></td>
 				<td><a href="<c:url value='/project-${project.id}/task-${task.id}/delete' />">delete</a></td>
-				<td><button class="open-button" onclick="openForm( ${task.id} )">Assign Task</button></td>
+				<td><button class="open-button" onclick="openForm( ${task.id} , ${task.assignedHours})">Assign Task</button></td>
 			</tr>
 		</c:forEach>
 	</table>
 	<br/>
-	<% Integer taskId;%>
+	<% Integer Id;%>
 	<div class="form-popup" id="myForm">
 
 		<form id="formAssignTask" modelAttribute="task" class="form-container" method="post" role="form" action="<c:url value="/project/task/assign"/>">
 			<input type="hidden" path="id" name = "id" id="id"/>
 			<label for="assignee">Assignee</label>
-			<select id="assignee" name="assignee">
+			<select id="assignee" name="assignee" path="assignee">
+				<option value=0 >--- Select Assignee ---</option>
 				<c:forEach var="employee" items="${employeeList}">
 					<option value="${employee.id}">${employee.name}</option>
 				</c:forEach>
-			</select></br>
+			</select>
+			<input type="hidden" path="error" name = "error" id="error"/>
+			</br>
 
 			<label for="assignHours">Assigned Hours</label>
-			<input type="number" placeholder="Enter Assign hours for task" id="assignHours" name="assignHours" required>
+			<input type="number" value="" placeholder="Enter Assign hours for task" id="assignHours" name="assignHours" required>
 
-			<button type="submit" class="btn">Assign Task</button>
+			<button type="submit" class="btn" onsubmit="validate()">Assign Task</button>
 			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
 		</form>
 	</div>
 
 	<script>
-		function openForm(taskId) {
+		function openForm(taskId, assignedHours) {
 			document.getElementById("myForm").style.display = "block";
 			document.getElementById('id').value = taskId;
+			document.getElementById('assignHours').value = assignedHours;
 		}
 
 		function closeForm() {
 			document.getElementById("myForm").style.display = "none";
 			document.getElementById("myForm").onmouseout= false;
+		}
+
+		function validate() {
+			var selectedAssignee = document.getElementById('assignee').value;
+			if(selectedAssignee == 0){
+				document.getElementById('assignee').focus();
+			}else{
+				document.getElementById("formAssignTask").action = "<c:url value="/project/task/assign"/>";
+			}
 		}
 	</script>
 

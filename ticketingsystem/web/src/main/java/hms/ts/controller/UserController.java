@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/employee")
@@ -50,13 +49,25 @@ public class UserController {
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
 	public String saveEmployee(@Valid Employee employee, BindingResult result, @RequestParam("name") String name,
 						   @RequestParam("email") String email,
-						   @RequestParam("role") int roleId,
+						   @RequestParam("role.id") int roleId,
 						   @RequestParam("username") String username,
 						   @RequestParam("password") String password, ModelMap model) {
 
 		if(roleId == 0){
-			FieldError roleError =new FieldError("employee","role",messageSource.getMessage("non.unique.id", null, Locale.getDefault()));
+			FieldError roleError =new FieldError("employee","role","*Employee role need to select here.");
 			result.addError(roleError);
+			return "addEmployee";
+		}
+
+		if(!employeeService.isValidEmailAddress(email)){
+			FieldError emailError =new FieldError("employee","email","*Not a valid email address.");
+			result.addError(emailError);
+			return "addEmployee";
+		}
+
+		if(!employeeService.isEmployeeUsernameUnique(username)){
+			FieldError usernameError =new FieldError("employee","username","*Username already has been taken someone.");
+			result.addError(usernameError);
 			return "addEmployee";
 		}
 

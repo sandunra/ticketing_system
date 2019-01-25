@@ -18,6 +18,10 @@ public interface EmployeeService {
 
 	Employee findEmployeeById(int id);
 
-	boolean isEmployeeIdUnique(Integer id);
+	Employee findEmployeeByUsername(String username);
+
+	boolean isEmployeeUsernameUnique(String username);
+
+	public  boolean isValidEmailAddress(String email);
 	
 }

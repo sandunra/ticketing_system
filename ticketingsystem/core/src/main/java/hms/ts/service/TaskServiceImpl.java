@@ -35,10 +35,10 @@ public class TaskServiceImpl implements TaskService {
 			entity.setDescription(task.getDescription());
 			entity.setTitle(task.getTitle());
 			entity.setAssignedHours(task.getAssignedHours());
-			entity.setSpentHours(task.getSpentHours());
-			entity.setEmployee(task.getEmployee());
+//			entity.setSpentHours(task.getSpentHours());
+//			entity.setEmployee(task.getEmployee());
 			entity.setProject(task.getProject());
-			entity.setStatus(task.getStatus());
+//			entity.setStatus(task.getStatus());
 
 		}
 	}

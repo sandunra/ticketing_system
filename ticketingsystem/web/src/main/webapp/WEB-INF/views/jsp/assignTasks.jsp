@@ -46,19 +46,19 @@
 			<%! String status;%>
 
 			<c:choose>
-				<c:when test="${task.status==0}">
+				<c:when test="${task.status==1}">
 					<% status="Not Assigned yet"; %>
 					<br />
 				</c:when>
-				<c:when test="${task.status==1}">
+				<c:when test="${task.status==2}">
 					<% status="Assigned";%>
 					<br />
 				</c:when>
-				<c:when test="${task.status==0}">
+				<c:when test="${task.status==3}">
 					<% status = "Ongoing"; %>
 					<br />
 				</c:when>
-				<c:when test="${task.status==0}">
+				<c:when test="${task.status==4}">
 					<% status = "Terminate"; %>
 					<br />
 				</c:when>

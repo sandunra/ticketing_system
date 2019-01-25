@@ -39,10 +39,12 @@
 
 			<tr>
 				<td><label for="type">Type: </label> </td>
-				<td><form:select path="type" id="type">
-					<form:option value = "NONE" label = "Select"/>
-					<form:options items="${appTypeList}"/>
-				</form:select></td>
+				<td>
+					<form:select path="type" id="type">
+						<form:option value = "NONE" label = "Select"/>
+						<form:options items="${appTypeList}"/>
+					</form:select>
+				</td>
 				<td><form:errors path="type" cssClass="error"/></td>
 			</tr>
 

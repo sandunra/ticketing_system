@@ -4,6 +4,7 @@ import hms.ts.model.Employee;
 import hms.ts.model.Project;
 import hms.ts.model.Task;
 import hms.ts.service.EmployeeService;
+import hms.ts.service.JavaEmailSender;
 import hms.ts.service.ProjectService;
 import hms.ts.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/")
@@ -33,6 +32,9 @@ public class TaskController {
 
 	@Autowired
 	EmployeeService employeeService;
+
+	@Autowired
+	JavaEmailSender javaEmailSender;
 	
 	@Autowired
 	MessageSource messageSource;
@@ -92,7 +94,7 @@ public class TaskController {
 		task.setAssignedHours(assignedHours);
 //		task.setSpentHours(spentHours);
 //		task.setComment(comment);
-		task.setStatus(0);
+		task.setStatus(1);
 
 		taskService.saveTask(task);
 
@@ -139,10 +141,10 @@ public class TaskController {
 							 @RequestParam("project.id") int projectId,
 							 @RequestParam("title") String title,
 						     @RequestParam("description") String description,
-						     @RequestParam("employee") int employeeId,
+//						     @RequestParam("employee") int employeeId,
 						     @RequestParam("assignedHours") int assignedHours,
-						     @RequestParam("spentHours") int spentHours,
-						     @RequestParam("status") int status,
+//						     @RequestParam("spentHours") int spentHours,
+//						     @RequestParam("status") int status,
 						     @RequestParam("comment") String comment) {
 
 		Task task = new Task();
@@ -150,11 +152,11 @@ public class TaskController {
 		task.setTitle(title);
 		task.setDescription(description);
 		task.setProject(projectService.findProjectById(projectId));
-		task.setEmployee(employeeService.findEmployeeById(employeeId));
+//		task.setEmployee(employeeService.findEmployeeById(employeeId));
 		task.setAssignedHours(assignedHours);
-		task.setSpentHours(spentHours);
+//		task.setSpentHours(spentHours);
 		task.setComment(comment);
-		task.setStatus(status);
+//		task.setStatus(status);
 
 		taskService.updateTask(task);
 		model.addAttribute("id", projectId);
@@ -169,6 +171,11 @@ public class TaskController {
 							  @RequestParam("assignee") int employeeId,
 							  @RequestParam("assignHours") int assignedHours) {
 
+		if( employeeId == 0){
+			String redirectUrl = "yahoo.com";
+			return "redirect:/project/task/assign";
+		}
+
 		Task task = taskService.findTaskById(taskId);
 		task.setId(taskId);
 		task.setEmployee(employeeService.findEmployeeById(employeeId));
@@ -176,9 +183,23 @@ public class TaskController {
 		task.setStatus(1);
 
 		taskService.assignAndUpdateTask(task);
+
+		String emailAddressTo = employeeService.findEmployeeById(employeeId).getEmail();
+		String msgSubject = taskService.findTaskById(taskId).getProject().getTitle() + " Project - task assigning";
+
+		String line1 = "<br><b>Project : </b>" +taskService.findTaskById(taskId).getProject().getTitle() + "<br><br>";
+		String line2 = "<b>Task : </b>" +taskService.findTaskById(taskId).getTitle() + "<br><br>";
+		String line3 = "<b>Description : </b>" +taskService.findTaskById(taskId).getDescription() + "<br><br>";
+		String line4 = "<b>Assign Hours :</b>" +taskService.findTaskById(taskId).getAssignedHours() + "<br><br>";
+
+
+		String msgText = line1 + "\n <br>" + line2 + "\n &#10;" +line3 + System.lineSeparator() + line4 + "\n";
+
+		javaEmailSender.createAndSendEmail(emailAddressTo, msgSubject, msgText);
+
 		model.addAttribute("id", task.getProject().getId());
 		model.addAttribute("task", true);
-		model.addAttribute("success", "Task " + task.getTitle()	+ " assigned to " +employeeService.findEmployeeById(employeeId).getName() + "successfully");
+		model.addAttribute("success", "Task :" + task.getTitle()	+ " assigned to " +employeeService.findEmployeeById(employeeId).getName() + "successfully. \nSend a email to " +employeeService.findEmployeeById(employeeId).getName() + "including task details.");
 		return "success";
 	}
 
@@ -236,6 +257,18 @@ public class TaskController {
 	public List<Project> listProjects() {
 		List<Project> projectList = projectService.findAllProjects();
 		return projectList;
+	}
+
+	@ModelAttribute("taskStatusList")
+	public Map<Integer, String> getAppTypeList() {
+		Map<Integer, String> taskStatusList = new HashMap<Integer, String>();
+		taskStatusList.put(0, "-- Select status --");
+		taskStatusList.put(1, "Not assigned yet");
+		taskStatusList.put(2, "Assigned");
+		taskStatusList.put(3, "Ongoing");
+		taskStatusList.put(4, "Terminate");
+		taskStatusList.put(5, "Complete");
+		return taskStatusList;
 	}
 
 }
