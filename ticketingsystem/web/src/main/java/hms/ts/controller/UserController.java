@@ -7,6 +7,7 @@ import hms.ts.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -47,16 +48,21 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
-	public String saveEmployee(@RequestParam("name") String name,
+	public String saveEmployee(@Valid Employee employee, BindingResult result, @RequestParam("name") String name,
 						   @RequestParam("email") String email,
-						   @RequestParam("role") int roletId,
+						   @RequestParam("role") int roleId,
 						   @RequestParam("username") String username,
 						   @RequestParam("password") String password, ModelMap model) {
 
-		Employee employee = new Employee();
+		if(roleId == 0){
+			FieldError roleError =new FieldError("employee","role",messageSource.getMessage("non.unique.id", null, Locale.getDefault()));
+			result.addError(roleError);
+			return "addEmployee";
+		}
+
 		employee.setName(name);
 		employee.setEmail(email);
-		employee.setRole(roleService.findRoleById(roletId));
+		employee.setRole(roleService.findRoleById(roleId));
 		employee.setUsername(username);
 		employee.setPassword(password);
 
@@ -101,10 +107,6 @@ public class UserController {
 		return "success";
 	}*/
 
-
-	/*
-	 * This method will provide the medium to update an existing employee.
-	 */
 	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.GET)
 	public String editEmployee(@PathVariable Integer id, ModelMap model) {
 		Employee employee = employeeService.findEmployeeById(id);
@@ -112,27 +114,26 @@ public class UserController {
 		model.addAttribute("edit", true);
 		return "addEmployee";
 	}
-	
-	/*
-	 * This method will be called on form submission, handling POST request for
-	 * updating employee in database. It also validates the user input
-	 */
+
+	@Transactional
 	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.POST)
-	public String updateEmployee(@Valid Employee employee, BindingResult result,
-			ModelMap model, @PathVariable Integer id) {
+	public String updateEmployee( ModelMap model,
+							  @RequestParam("id") int empid,
+							  @RequestParam("name") String name,
+							  @RequestParam("email") String email,
+							  @RequestParam("role") int role,
+							  @RequestParam("username") String username,
+							  @RequestParam("password") String password) {
 
-		if (result.hasErrors()) {
-			return "addEmployee";
-		}
-
-		if(!employeeService.isEmployeeIdUnique(id)){
-			FieldError idError =new FieldError("employee","id",messageSource.getMessage("non.unique.id", new Integer[]{employee.getId()}, Locale.getDefault()));
-		    result.addError(idError);
-			return "addEmployee";
-		}
+		Employee employee = new Employee();
+		employee.setId(empid);
+		employee.setName(name);
+		employee.setEmail(email);
+		employee.setRole(roleService.findRoleById(role));
+		employee.setUsername(username);
+		employee.setPassword(password);
 
 		employeeService.updateEmployee(employee);
-
 		model.addAttribute("employee", true);
 		model.addAttribute("success", "Employee " + employee.getName()	+ " updated successfully");
 		return "success";

@@ -48,6 +48,7 @@
 				<td><label for="role">Role: </label> </td>
 				<td>
 						<form:select path="role" id="role" name="role">
+							<option value=0 >Select Role</option>
 							<c:forEach items="${roleList}" var="role">
 								<option value="${role.id}" >${role.title}</option>
 							</c:forEach>
