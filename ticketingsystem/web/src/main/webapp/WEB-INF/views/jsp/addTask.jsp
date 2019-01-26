@@ -8,13 +8,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Ticketing System</title>
-
-<style>
-
-	.error {
-		color: #ff0000;
-	}
-</style>
+	<link href="<c:url value="/resources/css/mystyles.css" />" rel="stylesheet">
 
 </head>
 
@@ -26,19 +20,19 @@
 		<table>
 			<tr>
 				<td><label for="title">Title: </label> </td>
-				<td><form:input path="title" id="title" name="title"/></td>
+				<td><form:input path="title" id="title" name="title" required="true" placeholder="Task title.."/></td>
 				<td><form:errors path="title" cssClass="error"/></td>
 		    </tr>
 	    
 			<tr>
 				<td><label for="description">Description: </label> </td>
-				<td><form:input path="description" id="description" name="description"/></td>
+				<td><form:textarea path="description" id="description" name="description" required="true" placeholder="Description about task.."/></td>
 				<td><form:errors path="description" cssClass="error"/></td>
 		    </tr>
 
 			<tr>
 				<td><label for="assignedHours">Assigned Hours: </label> </td>
-				<td><form:input path="assignedHours" id="assignedHours" name="assignedHours"/></td>
+				<td><form:input type="number" path="assignedHours" id="assignedHours" name="assignedHours" min="0" required="true" placeholder="Assigned hours for task.."/></td>
 				<td><form:errors path="assignedHours" cssClass="error"/></td>
 			</tr>
 

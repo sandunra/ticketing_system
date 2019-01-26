@@ -14,7 +14,7 @@
 
 <body>
 
-	<h2>Add Project</h2>
+	<h2>Edit Project</h2>
  
 	<form:form method="POST" modelAttribute="project">
 		<form:input type="hidden" path="id" id="id"/>
@@ -50,7 +50,7 @@
 	
 			<tr>
 				<td colspan="3">
-					<input type="submit" value="Add"/>
+					<input type="submit" value="Update"/>
 				</td>
 			</tr>
 		</table>

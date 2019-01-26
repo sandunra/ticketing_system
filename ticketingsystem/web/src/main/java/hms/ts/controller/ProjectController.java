@@ -40,9 +40,6 @@ public class ProjectController {
 		return "allprojects";
 	}
 
-	/*
-	 * This method will provide the medium to add a new project.
-	 */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
 	public String newProject(ModelMap model) {
 		Project project = new Project();
@@ -51,10 +48,6 @@ public class ProjectController {
 		return "addProject";
 	}
 
-	/*
-	 * This method will be called on form submission, handling POST request for
-	 * saving employee in database. It also validates the user input
-	 */
 	@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
 	public String saveProject(@Valid Project project, BindingResult result,
 			ModelMap model) {
@@ -77,52 +70,59 @@ public class ProjectController {
 			return "addProject";
 		}
 
+		if(project.getType().equalsIgnoreCase("none")){
+			FieldError typeError =new FieldError("project","type","Project type need to be select here.");
+			result.addError(typeError);
+			return "addProject";
+		}
+
 		projectService.saveProject(project);
 
 		model.addAttribute("success", "Project " + project.getTitle() + " added successfully");
-		model.addAttribute("from", false);
+		model.addAttribute("project", true);
 		return "success";
 	}
 
-
-	/*
-	 * This method will provide the medium to update an existing employee.
-	 */
 	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.GET)
 	public String editProject(@PathVariable Integer id, ModelMap model) {
 		Project project = projectService.findProjectById(id);
 		model.addAttribute("project", project);
-		model.addAttribute("edit", true);
-		return "addProject";
+		return "editProject";
 	}
 	
 	/*
 	 * This method will be called on form submission, handling POST request for
-	 * updating employee in database. It also validates the user input
+	 * updating project in database. It also validates the user input
 	 */
 	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.POST)
 	public String updateProject(@Valid Project project, BindingResult result,
 			ModelMap model, @PathVariable String id) {
 
 		if (result.hasErrors()) {
-			return "addProject";
+			return "editProject";
 		}
 
 		if(!projectService.isProjectIdUnique(project.getId())){
 			FieldError idError =new FieldError("project","id",messageSource.getMessage("non.unique.id", new Integer[]{project.getId()}, Locale.getDefault()));
 		    result.addError(idError);
-			return "addProject";
+			return "editProject";
+		}
+
+		if(project.getType().equalsIgnoreCase("none")){
+			FieldError typeError =new FieldError("project","type","Project type need to be select here.");
+			result.addError(typeError);
+			return "editProject";
 		}
 
 		projectService.updateProject(project);
 
-		model.addAttribute("from", false);
+		model.addAttribute("project", true);
 		model.addAttribute("success", "Project " + project.getTitle()	+ " updated successfully");
 		return "success";
 	}
 	
 	/*
-	 * This method will delete an employee by it's SSN value.
+	 * This method will delete an employee by it's id value.
 	 */
 	@RequestMapping(value = { "/delete-{id}" }, method = RequestMethod.GET)
 	public String deleteProject(@PathVariable int id) {

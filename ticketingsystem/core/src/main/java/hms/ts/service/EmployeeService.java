@@ -20,7 +20,7 @@ public interface EmployeeService {
 
 	Employee findEmployeeByUsername(String username);
 
-	boolean isEmployeeUsernameUnique(String username);
+	boolean isEmployeeUsernameUnique(String username, int id);
 
 	public  boolean isValidEmailAddress(String email);
 	

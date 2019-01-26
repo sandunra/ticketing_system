@@ -14,7 +14,7 @@
 
 <body>
 
-	<h2>Add Employee</h2>
+	<h2>Edit Employee</h2>
 
 	<form:form method="POST" modelAttribute="employee">
 		<form:input type="hidden" path="id" id="id"/>
@@ -60,7 +60,7 @@
 	
 			<tr>
 				<td colspan="3">
-					<input type="submit" value="Add"/>
+					<input type="submit" value="Update"/>
 				</td>
 			</tr>
 		</table>

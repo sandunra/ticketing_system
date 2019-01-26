@@ -65,7 +65,7 @@ public class UserController {
 			return "addEmployee";
 		}
 
-		if(!employeeService.isEmployeeUsernameUnique(username)){
+		if(!employeeService.isEmployeeUsernameUnique(username,0)){
 			FieldError usernameError =new FieldError("employee","username","*Username already has been taken someone.");
 			result.addError(usernameError);
 			return "addEmployee";
@@ -84,63 +84,45 @@ public class UserController {
 		return "success";
 	}
 
-
-	/*
-	 * This method will be called on form submission, handling POST request for
-	 * saving employee in database. It also validates the user input
-	 */
-	/*@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
-	public String saveEmployee(@Valid Employee employee, BindingResult result,
-			ModelMap model) {
-
-		if (result.hasErrors()) {
-			return "addEmployee";
-		}
-
-		*//*
-		 * Preferred way to achieve uniqueness of field [ssn] should be implementing custom @Unique annotation 
-		 * and applying it on field [ssn] of Model class [Employee].
-		 * 
-		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
-		 * framework as well while still using internationalized messages.
-		 * 
-		 *//*
-		if(!employeeService.isEmployeeIdUnique(employee.getId())){
-			FieldError ssnError =new FieldError("employee","id",messageSource.getMessage("non.unique.id", new Integer[]{employee.getId()}, Locale.getDefault()));
-		    result.addError(ssnError);
-			return "addEmployee";
-		}
-		
-		employeeService.saveEmployee(employee);
-
-		model.addAttribute("success", "Employee " + employee.getName() + " registered successfully");
-		model.addAttribute("from", true);
-		return "success";
-	}*/
-
 	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.GET)
 	public String editEmployee(@PathVariable Integer id, ModelMap model) {
 		Employee employee = employeeService.findEmployeeById(id);
 		model.addAttribute("employee", employee);
-		model.addAttribute("edit", true);
-		return "addEmployee";
+		return "editEmployee";
 	}
 
 	@Transactional
 	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.POST)
-	public String updateEmployee( ModelMap model,
+	public String updateEmployee(@Valid Employee employee, BindingResult result,
 							  @RequestParam("id") int empid,
 							  @RequestParam("name") String name,
 							  @RequestParam("email") String email,
-							  @RequestParam("role") int role,
+							  @RequestParam("role.id") int roleId,
 							  @RequestParam("username") String username,
-							  @RequestParam("password") String password) {
+							  @RequestParam("password") String password, ModelMap model) {
 
-		Employee employee = new Employee();
+		if(roleId == 0){
+			FieldError roleError =new FieldError("employee","role","*Employee role need to select here.");
+			result.addError(roleError);
+			return "editEmployee";
+		}
+
+		if(!employeeService.isValidEmailAddress(email)){
+			FieldError emailError =new FieldError("employee","email","*Not a valid email address.");
+			result.addError(emailError);
+			return "editEmployee";
+		}
+
+		if(!employeeService.isEmployeeUsernameUnique(username, empid)){
+			FieldError usernameError =new FieldError("employee","username","*Username already has been taken someone.");
+			result.addError(usernameError);
+			return "editEmployee";
+		}
+
 		employee.setId(empid);
 		employee.setName(name);
 		employee.setEmail(email);
-		employee.setRole(roleService.findRoleById(role));
+		employee.setRole(roleService.findRoleById(roleId));
 		employee.setUsername(username);
 		employee.setPassword(password);
 
@@ -155,22 +137,6 @@ public class UserController {
 		employeeService.deleteEmployeeById(id);
 		return "redirect:/employee/list";
 	}
-
-	/*@ModelAttribute("roleList")
-	public Map<String, String> getCountryList() {
-		Map<String, String> roleList = new HashMap<String, String>();
-
-		//List<Job> jobList = jobService.listjobsByPage(page);
-
-		roleList.put("Manager", "Manager");
-		roleList.put("Tech Lead", "Tech Lead");
-		roleList.put("Senior Software Engineer", "Senior Software Engineer");
-		roleList.put("Software Engineer", "Software Engineer");
-		roleList.put("Associate Software Engineer", "Associate Software Engineer");
-		roleList.put("Trainee Software Engineer", "Trainee Software Engineer");
-		roleList.put("Marketing Officer", "Marketing Officer");
-		return roleList;
-	}*/
 
 	@ModelAttribute("roleList")
 	public List<Role> listRoles() {

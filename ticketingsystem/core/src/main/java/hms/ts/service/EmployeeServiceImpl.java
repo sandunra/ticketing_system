@@ -70,9 +70,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return dao.findEmployeeByUsername(username);
 	}
 
-	public boolean isEmployeeUsernameUnique(String username) {
+	public boolean isEmployeeUsernameUnique(String username, int id) {
 		Employee employee = findEmployeeByUsername(username);
-		return ( employee == null || ((username != null) && (employee.getUsername() == username)));
+		return ( employee == null || ((username != null) && (employee.getId() == id)));
 	}
 
 	public boolean isValidEmailAddress(String email) {
