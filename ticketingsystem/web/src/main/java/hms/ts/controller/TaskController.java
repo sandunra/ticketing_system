@@ -52,6 +52,8 @@ public class TaskController {
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("project", projectService.findProjectById(id));
 		model.addAttribute("admin", true);
+		model.addAttribute("error", false);
+		model.addAttribute("showpopup", false);
 		return "projectTasks";
 	}
 
@@ -113,27 +115,6 @@ public class TaskController {
 		return "editTask";
 	}
 
-	/*@RequestMapping(value = { "task-{id}/edit" }, method = RequestMethod.POST)
-	public String updateTask(@Valid Task task, BindingResult result,
-							 ModelMap model, @PathVariable String id) {
-
-		if (result.hasErrors()) {
-			return "editTask";
-		}
-
-		if(!taskService.isTaskIdUnique(task.getId())){
-			FieldError idError =new FieldError("task","id",messageSource.getMessage("non.unique.id", new Integer[]{task.getId()}, Locale.getDefault()));
-			result.addError(idError);
-			return "editTask";
-		}
-
-		taskService.updateTask(task);
-
-		model.addAttribute("task", true);
-		model.addAttribute("success", "Task " + task.getTitle()	+ " updated successfully");
-		return "success";
-	}*/
-
 	@Transactional
 	@RequestMapping(value = { "project/task/edit" }, method = RequestMethod.POST)
 	public String updateTask( ModelMap model,
@@ -165,22 +146,38 @@ public class TaskController {
 		return "success";
 	}
 
-	@RequestMapping(value = { "project/task/assign" }, method = RequestMethod.POST)
-	public String assignTask( ModelMap model,
-							  @RequestParam("id") int taskId,
+	@RequestMapping(value = { "project-{projectId}/task-{taskId}/assign" }, method = RequestMethod.GET)
+	public String assignTask(@PathVariable Integer projectId, @PathVariable Integer taskId, ModelMap model) {
+		List<Task> tasks = projectService.getProjectTasks(projectId);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("project", projectService.findProjectById(projectId));
+		Task task = taskService.findTaskById(taskId);
+		model.addAttribute("task", task);
+		model.addAttribute("error", false);
+		model.addAttribute("showpopup", true);
+		return "projectTasks";
+	}
+
+	@RequestMapping(value = { "project-{projectId}/task-{taskId}/assign" }, method = RequestMethod.POST)
+	public String assignTask( @PathVariable Integer projectId, @PathVariable Integer taskId, ModelMap model,
 							  @RequestParam("assignee") int employeeId,
 							  @RequestParam("assignHours") int assignedHours) {
 
+		List<Task> tasks = projectService.getProjectTasks(projectId);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("project", projectService.findProjectById(projectId));
+		Task task = taskService.findTaskById(taskId);
+		model.addAttribute("task", task);
+		model.addAttribute("showpopup", true);
 		if( employeeId == 0){
-			String redirectUrl = "yahoo.com";
-			return "redirect:/project/task/assign";
+			model.addAttribute("error", true);
+			return "projectTasks";
 		}
 
-		Task task = taskService.findTaskById(taskId);
 		task.setId(taskId);
 		task.setEmployee(employeeService.findEmployeeById(employeeId));
 		task.setAssignedHours(assignedHours);
-		task.setStatus(1);
+		task.setStatus(2);
 
 		taskService.assignAndUpdateTask(task);
 
@@ -192,59 +189,23 @@ public class TaskController {
 		String line3 = "<b>Description : </b>" +taskService.findTaskById(taskId).getDescription() + "<br><br>";
 		String line4 = "<b>Assign Hours :</b>" +taskService.findTaskById(taskId).getAssignedHours() + "<br><br>";
 
-
 		String msgText = line1 + "\n <br>" + line2 + "\n &#10;" +line3 + System.lineSeparator() + line4 + "\n";
 
 		javaEmailSender.createAndSendEmail(emailAddressTo, msgSubject, msgText);
 
 		model.addAttribute("id", task.getProject().getId());
 		model.addAttribute("task", true);
-		model.addAttribute("success", "Task :" + task.getTitle()	+ " assigned to " +employeeService.findEmployeeById(employeeId).getName() + "successfully. \nSend a email to " +employeeService.findEmployeeById(employeeId).getName() + "including task details.");
+		model.addAttribute("success", "Task :" + task.getTitle()	+ " assigned to " +employeeService.findEmployeeById(employeeId).getName() + " successfully. <br> Email has been sent to " +employeeService.findEmployeeById(employeeId).getName() + " including task details.");
 		return "success";
 	}
-
-
-	/*public String saveTask(@Valid Task task, BindingResult result, ModelMap model) {
-
-		if (result.hasErrors()) {
-			return "addTask";
-		}
-
-		*//*
-		 * Preferred way to achieve uniqueness of field [ssn] should be implementing custom @Unique annotation 
-		 * and applying it on field [ssn] of Model class [Employee].
-		 * 
-		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
-		 * framework as well while still using internationalized messages.
-		 * 
-		 *//*
-		if(!taskService.isTaskIdUnique(task.getId())){
-			FieldError ssnError =new FieldError("task","id",messageSource.getMessage("non.unique.id", new Integer[]{task.getId()}, Locale.getDefault()));
-		    result.addError(ssnError);
-			return "addTask";
-		}
-
-		taskService.saveTask(task);
-
-		model.addAttribute("success", "Task " + task.getTitle() + " added successfully");
-		model.addAttribute("from", false);
-		return "success";
-	}*/
-
 	
 	/*
-	 * This method will be called on form submission, handling POST request for
-	 * updating employee in database. It also validates the user input
+	 * This method will delete an employee by it's id value.
 	 */
-
-	
-	/*
-	 * This method will delete an employee by it's SSN value.
-	 */
-	@RequestMapping(value = { "task-{id}/delete" }, method = RequestMethod.GET)
-	public String deleteTask(@PathVariable int id) {
-		taskService.deleteTaskById(id);
-		return "redirect:/project-{id}/task-list";
+	@RequestMapping(value = { "project-{projectId}/task-{taskId}/delete" }, method = RequestMethod.GET)
+	public String deleteTask(@PathVariable int projectId, @PathVariable int taskId) {
+		taskService.deleteTaskById(taskId);
+		return "redirect:/project-{projectId}/task-list";
 	}
 
 	@ModelAttribute("employeeList")

@@ -72,3 +72,32 @@ input[type=submit]:hover {
 .error {
     color: #ff0000;
 }
+
+.my_content_container a {
+    color: white;
+    padding: 3px 20px;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    display: block;
+    text-decoration: none;
+}
+
+.red {
+    border-radius: 10px;
+    background-color: #ff5b58;
+}
+
+.my_content_container .blue {
+    border-radius: 10px;
+    background-color: #2217b0;
+}
+
+.my_content_container .green {
+    border-radius: 10px;
+    background-color: #40b020;
+}
+
+.my_content_container a:hover {
+    opacity: 1;
+}

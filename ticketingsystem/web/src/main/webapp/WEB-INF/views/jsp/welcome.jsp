@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Welcome page</title>
+	<title>Ticketing System</title>
 </head>
 <body>
 	Greeting : ${greeting}
