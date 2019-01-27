@@ -2,6 +2,7 @@ package hms.ts.service;
 
 import hms.ts.dao.EmployeeDao;
 import hms.ts.model.Employee;
+import hms.ts.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +71,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return dao.findEmployeeByUsername(username);
 	}
 
+	public List<Employee> findEmployeeByRole(int roleId) {
+		return dao.findEmployeeByRole(roleId);
+	}
+
 	public boolean isEmployeeUsernameUnique(String username, int id) {
 		Employee employee = findEmployeeByUsername(username);
 		return ( employee == null || ((username != null) && (employee.getId() == id)));
@@ -85,6 +90,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		return result;
 	}
+
+	public List<Task> getAssignTasksList(int empId) {
+		return dao.getAssignTasksList(empId);
+	}
+
 
 	/*protected Map getRoleList(HttpServletRequest request) throws Exception {
 		Map roleList = new HashMap();

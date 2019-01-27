@@ -1,5 +1,8 @@
 package hms.ts.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -25,7 +28,8 @@ public class Project implements Serializable {
     @Column(name="client")
     private String client;
 
-    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "project", cascade=CascadeType.ALL)
     private List<Task> taskList;
 
     public Project() {

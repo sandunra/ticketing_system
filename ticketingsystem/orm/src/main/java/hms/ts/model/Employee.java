@@ -1,5 +1,8 @@
 package hms.ts.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -29,6 +32,7 @@ public class Employee implements Serializable{
     @Column(name="email", nullable = false)
     private String email;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "employee", cascade=CascadeType.ALL)
     private List<Task> taskList;
 

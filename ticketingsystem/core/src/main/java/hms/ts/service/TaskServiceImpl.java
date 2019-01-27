@@ -31,7 +31,7 @@ public class TaskServiceImpl implements TaskService {
 	public void updateTask(Task task) {
 		Task entity = dao.findTaskById(task.getId());
 		if(entity!=null){
-			entity.setComment(task.getComment());
+			entity.setComment(entity.getComment()+task.getComment());
 			entity.setDescription(task.getDescription());
 			entity.setTitle(task.getTitle());
 			entity.setAssignedHours(task.getAssignedHours());
@@ -49,6 +49,18 @@ public class TaskServiceImpl implements TaskService {
 			entity.setEmployee(task.getEmployee());
 			entity.setAssignedHours(task.getAssignedHours());
 			entity.setStatus(task.getStatus());
+		}
+	}
+
+	public void UpdateTaskStatus(Task task) {
+		Task entity = dao.findTaskById(task.getId());
+		if(entity!=null){
+			entity.setStatus(task.getStatus());
+			entity.setSpentHours(task.getSpentHours());
+			if(entity.getComment() != null )
+			entity.setComment(entity.getComment()+"<br>\n" +task.getComment());
+			else
+			entity.setComment(task.getComment());
 		}
 	}
 

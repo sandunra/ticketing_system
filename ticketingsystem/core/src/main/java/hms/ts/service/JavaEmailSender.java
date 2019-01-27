@@ -15,9 +15,9 @@ public class JavaEmailSender {
     private HibernateTemplate hibernateTemplate;
 
 
-    final String USER_NAME = "ticketingsystemmydemo@gmail.com";   //User name of the Goole(gmail) account
-    final String PASSSWORD = "testing@mail5";  //Password of the Goole(gmail) account
-    final String FROM_ADDRESS = "ticketingsystemmydemo@gmail.com";  //From addresss
+    private String USER_NAME = new String();   //User name of the Goole(gmail) account
+    private String PASSSWORD = new String();  //Password of the Goole(gmail) account
+    private String FROM_ADDRESS = new String();  //From addresss
 
     public JavaEmailSender() {
     }
@@ -84,6 +84,18 @@ public class JavaEmailSender {
 
     public void setMessageText(String msgText) {
         this.msgText = msgText;
+    }
+
+    public void setUsername(String username) {
+        this.USER_NAME = username;
+    }
+
+    public void setPassword(String password) {
+        this.PASSSWORD = password;
+    }
+
+    public void setFromAddress(String fromAddress) {
+        this.FROM_ADDRESS = fromAddress;
     }
 
 }

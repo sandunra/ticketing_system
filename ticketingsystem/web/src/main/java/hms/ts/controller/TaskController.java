@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,8 +163,9 @@ public class TaskController {
 	@RequestMapping(value = { "project-{projectId}/task-{taskId}/assign" }, method = RequestMethod.POST)
 	public String assignTask( @PathVariable Integer projectId, @PathVariable Integer taskId, ModelMap model,
 							  @RequestParam("assignee") int employeeId,
-							  @RequestParam("assignHours") int assignedHours) {
+							  @RequestParam("assignHours") int assignedHours, HttpServletRequest request, HttpServletResponse response) {
 
+		int myId = (int)request.getSession().getAttribute("id");
 		List<Task> tasks = projectService.getProjectTasks(projectId);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("project", projectService.findProjectById(projectId));
@@ -191,6 +194,9 @@ public class TaskController {
 
 		String msgText = line1 + "\n <br>" + line2 + "\n &#10;" +line3 + System.lineSeparator() + line4 + "\n";
 
+		javaEmailSender.setUsername(employeeService.findEmployeeById(myId).getEmail());
+		javaEmailSender.setPassword(employeeService.findEmployeeById(myId).getPassword());
+		javaEmailSender.setFromAddress(employeeService.findEmployeeById(myId).getEmail());
 		javaEmailSender.createAndSendEmail(emailAddressTo, msgSubject, msgText);
 
 		model.addAttribute("id", task.getProject().getId());

@@ -2,6 +2,8 @@
 		 pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page session="true"%>
+<% Integer myId = (Integer)session.getAttribute("id") ;%>
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,7 +23,7 @@
 </script>
 
 <body>
-<jsp:include page="menu.jsp" />
+<jsp:include page="adminmenu.jsp" />
 
 	<h2>${project.title}  Project Task List</h2>
 

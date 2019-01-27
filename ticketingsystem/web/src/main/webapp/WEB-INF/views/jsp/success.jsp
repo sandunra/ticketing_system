@@ -14,7 +14,17 @@
 	</style>
 </head>
 <body>
-<jsp:include page="menu.jsp" />
+
+<c:choose>
+	<c:when test="${employeetask}">
+		<jsp:include page="usermenu.jsp" />
+	</c:when>
+
+	<c:otherwise>
+		<jsp:include page="adminmenu.jsp" />
+	</c:otherwise>
+</c:choose>
+
 	message : ${success}
 	<br/>
 	<br/>
@@ -26,6 +36,9 @@
 		</c:when>
 		<c:when test="${task}">
 			<a href="<c:url value='/project-${id}/task-list' />">List of Tasks</a>
+		</c:when>
+		<c:when test="${employeetask}">
+			<a href="<c:url value='/empId-${empId}/assignTasks' />">List of Assigned Tasks</a>
 		</c:when>
 		<c:otherwise>
 			<a href="<c:url value='/project/list' />">List of Projects</a>

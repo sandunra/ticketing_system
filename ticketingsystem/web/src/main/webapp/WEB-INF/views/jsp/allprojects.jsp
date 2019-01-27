@@ -22,7 +22,7 @@
 
 
 <body>
-<jsp:include page="menu.jsp" />
+<jsp:include page="adminmenu.jsp" />
 
 	<h2>List of Projects</h2>
 	<table>

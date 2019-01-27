@@ -1,17 +1,18 @@
 package hms.ts.controller;
 
 import hms.ts.model.Project;
+import hms.ts.model.Task;
+import hms.ts.service.EmployeeService;
+import hms.ts.service.JavaEmailSender;
 import hms.ts.service.ProjectService;
+import hms.ts.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -20,11 +21,19 @@ import java.util.Locale;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/project")
 public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
+
+	@Autowired
+	EmployeeService employeeService;
+
+	@Autowired
+	TaskService taskService;
+
+	@Autowired
+	JavaEmailSender javaEmailSender;
 	
 	@Autowired
 	MessageSource messageSource;
@@ -32,7 +41,7 @@ public class ProjectController {
 	/*
 	 * This method will list all existing projects.
 	 */
-	@RequestMapping(value = { "", "/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/project", "/project/list" }, method = RequestMethod.GET)
 	public String listProjects(ModelMap model) {
 
 		List<Project> projects = projectService.findAllProjects();
@@ -40,7 +49,89 @@ public class ProjectController {
 		return "allprojects";
 	}
 
-	@RequestMapping(value = { "/new" }, method = RequestMethod.GET)
+	@RequestMapping(value = {"/empId-{id}/assignTasks" }, method = RequestMethod.GET)
+	public String userAssignProjects(@PathVariable int id, ModelMap model) {
+
+		//String userName=principal.getName();
+		List<Task> tasks = employeeService.getAssignTasksList(id);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("admin", false);
+		model.addAttribute("error", false);
+		model.addAttribute("showpopup", false);
+		return "assignTasks";
+	}
+
+	@RequestMapping(value = {"/emp-{empId}/task-{id}/update" }, method = RequestMethod.GET)
+	public String updateStatus(@Valid Task task, @PathVariable int id, @PathVariable int empId, ModelMap model) {
+
+		List<Task> tasks = employeeService.getAssignTasksList(empId);
+		task = taskService.findTaskById(id);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("task", task);
+		model.addAttribute("admin", false);
+		model.addAttribute("error", false);
+		model.addAttribute("showpopup", true);
+		return "assignTasks";
+	}
+
+	@RequestMapping(value = { "/emp-{empId}/task-{id}/update" }, method = RequestMethod.POST)
+	public String assignTask( @PathVariable Integer empId, @PathVariable Integer id, ModelMap model,
+							  @RequestParam("status") int status,
+							  @RequestParam("spentHours") int spentHours,
+							  @RequestParam("comment") String comment) {
+
+		List<Task> tasks = employeeService.getAssignTasksList(empId);
+		Task task = taskService.findTaskById(id);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("task", task);
+		model.addAttribute("admin", false);
+		model.addAttribute("showpopup", true);
+		if( status == 0){
+			model.addAttribute("error", true);
+			return "assignTasks";
+		}
+
+		task.setId(id);
+		task.setSpentHours(spentHours);
+		task.setStatus(status);
+		task.setComment(comment);
+
+		taskService.UpdateTaskStatus(task);
+
+		String emailAddressTo = employeeService.findEmployeeByRole(1).get(0).getEmail();
+		String msgSubject = taskService.findTaskById(id).getProject().getTitle() + " Project - task status update ";
+		String taskStatus;
+		if(status == 3)
+			taskStatus = "Ongoing";
+		else if(status == 3)
+		taskStatus = "Terminate";
+		else
+		taskStatus = "Complete";
+
+
+		String line1 = "<br><b>Project : </b>" +taskService.findTaskById(id).getProject().getTitle() + "<br><br>";
+		String line2 = "<b>Task : </b>" +taskService.findTaskById(id).getTitle() + "<br><br>";
+		String line3 = "<b>Status : </b>" +taskStatus + "<br><br>";
+		String line4 = "<b>Spent Hours :</b>" +taskService.findTaskById(id).getSpentHours() + "<br><br>";
+		String line5 = "<b>Comment :</b>" +taskService.findTaskById(id).getComment() + "<br><br>";
+
+		String msgText = line1 + "\n" + line2 + "\n &#10;" +line3 + System.lineSeparator() + line4 + "\n" +line5 ;
+
+		javaEmailSender.setUsername(employeeService.findEmployeeById(empId).getEmail());
+		javaEmailSender.setPassword(employeeService.findEmployeeById(empId).getPassword());
+		javaEmailSender.setFromAddress(employeeService.findEmployeeById(empId).getEmail());
+
+		javaEmailSender.createAndSendEmail(emailAddressTo, msgSubject, msgText);
+
+		model.addAttribute("empId", empId);
+		model.addAttribute("employeetask", true);
+		model.addAttribute("task", false);
+		model.addAttribute("success", "Task :" + task.getTitle()	+ " status updated successfully. <br> Email has been sent to admin including details.");
+		return "success";
+	}
+
+
+	@RequestMapping(value = { "/project/new" }, method = RequestMethod.GET)
 	public String newProject(ModelMap model) {
 		Project project = new Project();
 		model.addAttribute("project", project);
@@ -48,7 +139,7 @@ public class ProjectController {
 		return "addProject";
 	}
 
-	@RequestMapping(value = { "/new" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/project/new" }, method = RequestMethod.POST)
 	public String saveProject(@Valid Project project, BindingResult result,
 			ModelMap model) {
 
@@ -83,7 +174,7 @@ public class ProjectController {
 		return "success";
 	}
 
-	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/project/edit-{id}" }, method = RequestMethod.GET)
 	public String editProject(@PathVariable Integer id, ModelMap model) {
 		Project project = projectService.findProjectById(id);
 		model.addAttribute("project", project);
@@ -94,7 +185,7 @@ public class ProjectController {
 	 * This method will be called on form submission, handling POST request for
 	 * updating project in database. It also validates the user input
 	 */
-	@RequestMapping(value = { "/edit-{id}" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/project/edit-{id}" }, method = RequestMethod.POST)
 	public String updateProject(@Valid Project project, BindingResult result,
 			ModelMap model, @PathVariable String id) {
 
@@ -124,7 +215,7 @@ public class ProjectController {
 	/*
 	 * This method will delete an employee by it's id value.
 	 */
-	@RequestMapping(value = { "/delete-{id}" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/project/delete-{id}" }, method = RequestMethod.GET)
 	public String deleteProject(@PathVariable int id) {
 		projectService.deleteProjectById(id);
 		return "redirect:/project/list";

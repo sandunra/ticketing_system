@@ -23,7 +23,7 @@ tr:first-child{
     border: 3px solid #f1f1f1;
     z-index: 9;
     position: absolute;
-    top: 30%;
+    top: 25%;
     left: 30%;
 }
 
@@ -35,16 +35,16 @@ tr:first-child{
 }
 
 /* Full-width input fields */
-.form-container input[type=number], .form-container select {
+.form-container input[type=number], .form-container select, textarea {
     width: 100%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
+    padding: 10px;
+    margin: 5px 0 16px 0;
     border: none;
     background: #f1f1f1;
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=number], .form-container select:focus {
+.form-container input[type=number], .form-container select, textarea:focus {
     background-color: #ddd;
     outline: none;
 }

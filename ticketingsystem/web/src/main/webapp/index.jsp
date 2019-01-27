@@ -16,7 +16,7 @@
 			<div class="login-form">
 
 				<!-- User input form to validate a user -->
-				<c:url var="validateUrl" value="/user" />
+				<c:url var="validateUrl" value="/home" />
 				<form id="user_form" action="${validateUrl}" method="post" class="form-horizontal">
 					<c:if test="${param.error != null}">
 						<div class="alert alert-danger">

@@ -20,7 +20,7 @@
 </head>
 
 <body>
-<jsp:include page="menu.jsp" />
+<jsp:include page="adminmenu.jsp" />
 
 	<h2>List of Employees</h2>	
 	<table>

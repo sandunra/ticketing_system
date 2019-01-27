@@ -14,8 +14,8 @@
 	</style>
 </head>
 <body>
-<jsp:include page="menu.jsp" />
-	Dear <strong>${pageContext.request.userPrincipal.name}</strong>, Welcome to User Page.
+<jsp:include page="usermenu.jsp" />
+	Dear <strong>${user}</strong>, Welcome to User Page*************************.
 	<%--<a href="<c:url value="/logout" />">Logout</a>--%>
 </body>
 </html>
