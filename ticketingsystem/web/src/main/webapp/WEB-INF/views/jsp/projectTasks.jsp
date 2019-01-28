@@ -6,6 +6,9 @@
 <% Integer myId = (Integer)session.getAttribute("id") ;%>
 <html>
 <head>
+	<% if(session.getAttribute("username") == null)
+		response.sendRedirect("/");
+	%>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Ticketing System</title>
 	<link href="<c:url value="/resources/css/popUpFormStyles.css" />" rel="stylesheet">
@@ -23,14 +26,15 @@
 </script>
 
 <body>
+<div class="bg-img">
 <jsp:include page="adminmenu.jsp" />
 
 	<h2>${project.title}  Project Task List</h2>
 
 	</hr>
 
-	<table>
-		<td>TASK ID</td><td>TITLE</td><td>DESCRIPTION</td><td>ASSIGNED HOURS</td><td>ASSIGNEE</td><td>COMMENT</td><td>SPENT HOURS</td><td>STATUS</td>
+	<table class="customizetable">
+		<th>TASK ID</th><th>TITLE</th><th>DESCRIPTION</th><th>ASSIGNED HOURS</th><th>ASSIGNEE</th><th>COMMENT</th><th>SPENT HOURS</th><th>STATUS</th>
 		<tr>
 		</tr>
 		<c:forEach items="${tasks}" var="task">
@@ -152,5 +156,6 @@
 
 
 	<a href="<c:url value='/project-${project.id}/task/new' />">Add New Task</a>
+</div>
 </body>
 </html>

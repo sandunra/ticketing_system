@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
+	<% if(session.getAttribute("username") == null)
+		response.sendRedirect("/");
+	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Ticketing System</title>
 
@@ -20,12 +23,13 @@
 </head>
 
 <body>
+<div class="bg-img">
 <jsp:include page="adminmenu.jsp" />
 
 	<h2>List of Employees</h2>	
-	<table>
+	<table class="customizetable">
 		<tr>
-			<td>ID</td><td>NAME</td><td>EMAIL</td><td>ROLE</td><td></td>
+			<th>ID</th><th>NAME</th><th>EMAIL</th><th>ROLE</th><th></th>
 		</tr>
 		<c:forEach items="${employees}" var="employee">
 			<tr>
@@ -39,5 +43,6 @@
 	</table>
 	<br/>
 	<a href="<c:url value='/employee/new' />">Add New Employee</a>
+</div>
 </body>
 </html>

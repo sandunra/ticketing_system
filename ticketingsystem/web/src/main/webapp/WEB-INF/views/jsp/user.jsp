@@ -3,6 +3,9 @@
 <%@page session="true"%>
 <html>
 <head>
+	<% if(session.getAttribute("username") == null)
+		response.sendRedirect("/");
+	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Ticketing System</title>
 
@@ -14,8 +17,10 @@
 	</style>
 </head>
 <body>
+<div class="bg-img">
 <jsp:include page="usermenu.jsp" />
-	Dear <strong>${user}</strong>, Welcome to User Page*************************.
+	<h2>Dear <%= session.getAttribute("username")%>, Welcome to User Page**********</h2>
 	<%--<a href="<c:url value="/logout" />">Logout</a>--%>
+</div>
 </body>
 </html>

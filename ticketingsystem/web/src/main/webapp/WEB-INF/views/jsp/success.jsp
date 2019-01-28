@@ -4,6 +4,9 @@
 
 <html>
 <head>
+	<% if(session.getAttribute("username") == null)
+		response.sendRedirect("/");
+	%>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Ticketing System</title>
 	<style>
@@ -14,6 +17,7 @@
 	</style>
 </head>
 <body>
+<div class="bg-img">
 
 <c:choose>
 	<c:when test="${employeetask}">
@@ -44,7 +48,7 @@
 			<a href="<c:url value='/project/list' />">List of Projects</a>
 		</c:otherwise>
 	</c:choose>
-	
+</div>
 </body>
 
 </html>

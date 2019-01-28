@@ -7,6 +7,9 @@
 <html>
 
 <head>
+	<% if(session.getAttribute("username") == null)
+		response.sendRedirect("/");
+	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Ticketing System</title>
 	<link href="<c:url value="/resources/css/mystyles.css" />" rel="stylesheet">
@@ -14,6 +17,8 @@
 </head>
 
 <body>
+<div class="bg-img">
+	<jsp:include page="adminmenu.jsp" />
 
 	<h2>Edit Task</h2>
 
@@ -94,5 +99,6 @@
 			<a href="<c:url value='/project-${project.id}/task-list' />">List of All Tasks</a>
 		</c:otherwise>
 	</c:choose>
+</div>
 </body>
 </html>

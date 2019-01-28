@@ -6,16 +6,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.Principal;
 
 @Controller
 public class MainController {
 
 	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
-	public String homePage(ModelMap model) {
-		model.addAttribute("greeting", " Welcome to Ticketing System");
-		return "welcome";
+	public String homePage(ModelMap model, HttpServletRequest request) {
+
+
+		if ((boolean)request.getSession().getAttribute("isAdmin")) {
+			return "admin";
+		} else {
+			return "user" ;
+		}
 	}
 
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -42,19 +52,20 @@ public class MainController {
 		return "login";
 	}
 
-/*	@RequestMapping(value="/logout", method = RequestMethod.GET)
-	public String logoutPage (HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	public String logoutPage (HttpServletRequest request, HttpServletResponse response, SessionStatus session) throws IOException {
 
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		out.println("thanq you!!, Your session was destroyed successfully!!");
-		HttpSession session = request.getSession(false);
-		session.setAttribute("username", null);
-		session.removeAttribute("username");
-		session.removeAttribute("isAdmin");
-		session.getMaxInactiveInterval();
+//		HttpSession session = request.getSession(false);
+//		session.setAttribute("username", null);
+//		session.removeAttribute("username");
+//		session.removeAttribute("isAdmin");
+//		session.getMaxInactiveInterval();
+		session.setComplete();
+		request.getSession().invalidate();
 		return "redirect:/?logout";//You can redirect wherever you want, but generally it's a good idea to show login screen again.
-	}*/
+	}
 
 	private String getUser(){
 		String userName = null;

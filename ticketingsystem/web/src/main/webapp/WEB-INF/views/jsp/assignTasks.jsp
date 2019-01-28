@@ -6,6 +6,9 @@
 
 <html>
 <head>
+	<% if(session.getAttribute("username") == null)
+		response.sendRedirect("/");
+	%>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Ticketing System</title>
 	<link href="<c:url value="/resources/css/popUpFormStyles.css" />" rel="stylesheet">
@@ -23,14 +26,15 @@
 </script>
 
 <body>
+<div class="bg-img">
 <jsp:include page="usermenu.jsp" />
 
 <%--<h2>${project.title}  Assign Task List</h2>--%>
 
 </hr>
 
-<table>
-	<td>PROJECT</td><td>TASK</td><td>DESCRIPTION</td><td>ASSIGNED HOURS</td><td>COMMENT</td><td>STATUS</td>
+<table class="customizetable">
+	<th>PROJECT</th><th>TASK</th><th>DESCRIPTION</th><th>ASSIGNED HOURS</th><th>COMMENT</th><th>STATUS</th>
 	<tr>
 	</tr>
 	<%Integer userId = (Integer) session.getAttribute("id");%>
@@ -160,5 +164,6 @@
 <%--
 <a href="<c:url value='/project-${project.id}/task/new' />">Add New Task</a>
 --%>
+</div>
 </body>
 </html>

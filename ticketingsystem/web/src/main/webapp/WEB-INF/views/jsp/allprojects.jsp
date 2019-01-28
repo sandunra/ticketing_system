@@ -4,6 +4,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
+	<%
+		if(session.getAttribute("username") == null)
+			response.sendRedirect("/");
+	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Ticketing System</title>
 
@@ -16,17 +20,19 @@
 			padding-left: 10px;
 			padding-right: 10px;
 		}
+
 	</style>
 
 </head>
 
 
 <body>
+<div class="bg-img">
 <jsp:include page="adminmenu.jsp" />
 
 	<h2>List of Projects</h2>
-	<table>
-		<td>ID</td><td>TITLE</td><td>DESCRIPTION</td><td>TYPE</td><td>CLIENT</td>
+	<table class="customizetable">
+		<th>ID</th><th>TITLE</th><th>DESCRIPTION</th><th>TYPE</th><th>CLIENT</th>
 		<tr>
 		</tr>
 		<c:forEach items="${projects}" var="project">
@@ -43,5 +49,6 @@
 	</table>
 	<br/>
 	<a href="<c:url value='/project/new' />">Add New Project</a>
+</div>
 </body>
 </html>

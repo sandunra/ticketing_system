@@ -31,7 +31,10 @@ public class TaskServiceImpl implements TaskService {
 	public void updateTask(Task task) {
 		Task entity = dao.findTaskById(task.getId());
 		if(entity!=null){
-			entity.setComment(entity.getComment()+task.getComment());
+			if(entity.getComment() != null )
+				entity.setComment(entity.getComment()+"<br>\n" +task.getComment());
+			else
+				entity.setComment(task.getComment());
 			entity.setDescription(task.getDescription());
 			entity.setTitle(task.getTitle());
 			entity.setAssignedHours(task.getAssignedHours());

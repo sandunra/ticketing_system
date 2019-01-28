@@ -4,6 +4,9 @@
 <%@page session="true"%>
 <html>
 <head>
+	<% if(session.getAttribute("username") == null)
+		response.sendRedirect("/");
+	%>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Ticketing System</title>
 
@@ -18,11 +21,12 @@
 
 
 <body>
+<div class="bg-img">
 <jsp:include page="adminmenu.jsp" />
 
 	<h2>List of Tasks</h2>
-	<table>
-		<td>ID</td><td>TITLE</td><td>PROJECT</td><td>DESCRIPTION</td><td>ASSIGNED HOURS</td><td>COMMENT</td><td>SPENT HOURS</td><td>STATUS</td><td></td>
+	<table class="customizetable">
+		<th>ID</th><th>TITLE</th><th>PROJECT</th><th>DESCRIPTION</th><th>ASSIGNED HOURS</th><th>COMMENT</th><th>SPENT HOURS</th><th>STATUS</th><th></th>
 		<tr>
 		</tr>
 		<c:forEach items="${tasks}" var="task">
@@ -41,5 +45,6 @@
 	</table>
 	<br/>
 	<a href="<c:url value='/task/new' />">Add New Task</a>
+</div>
 </body>
 </html>
