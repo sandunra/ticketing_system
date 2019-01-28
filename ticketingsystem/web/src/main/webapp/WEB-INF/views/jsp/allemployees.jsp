@@ -37,7 +37,7 @@
 			<td>${employee.name}</td>
 			<td>${employee.email}</td>
 			<td>${employee.role.title}</td>
-			<td><a href="<c:url value='/employee/delete-${employee.id}' />">delete</a></td>
+			<td><a href="<c:url value='/employee/delete-${employee.id}' />" onclick="return confirm('Are you sure you want to delete this user?');">delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>

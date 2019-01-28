@@ -54,6 +54,8 @@ public class ProjectController {
 
 		//String userName=principal.getName();
 		List<Task> tasks = employeeService.getAssignTasksList(id);
+		if(tasks.size() == 0)
+			model.addAttribute("noTasks", true);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("admin", false);
 		model.addAttribute("error", false);
@@ -65,6 +67,8 @@ public class ProjectController {
 	public String updateStatus(@Valid Task task, @PathVariable int id, @PathVariable int empId, ModelMap model) {
 
 		List<Task> tasks = employeeService.getAssignTasksList(empId);
+		if(tasks.size() == 0)
+			model.addAttribute("noTasks", true);
 		task = taskService.findTaskById(id);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("task", task);
@@ -81,6 +85,8 @@ public class ProjectController {
 							  @RequestParam("comment") String comment) {
 
 		List<Task> tasks = employeeService.getAssignTasksList(empId);
+		if(tasks.size() == 0)
+			model.addAttribute("noTasks", true);
 		Task task = taskService.findTaskById(id);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("task", task);

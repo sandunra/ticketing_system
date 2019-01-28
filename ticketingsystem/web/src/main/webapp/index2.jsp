@@ -100,7 +100,7 @@
 
 <!-- copyright -->
 <div class="footer">
-	<p>&copy; 2018 Classic Sign In Form. All rights reserved | Design by
+	<p>&copy; 2018 BeyondM. All Rights Reserved.  | Design by
 		<a href="http://beyondm.net">BeyondM</a>
 	</p>
 </div>

@@ -97,7 +97,7 @@
 				</td>
 				<td>
 					<div class="my_content_container">
-						<a href="<c:url value='/project-${project.id}/task-${task.id}/delete' />">delete</a>
+						<a href="<c:url value='/project-${project.id}/task-${task.id}/delete' />" onclick="return confirm('Are you sure you want to delete this task?');">delete</a>
 					</div>
 				</td>
 

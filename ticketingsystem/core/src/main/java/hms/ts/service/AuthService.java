@@ -36,7 +36,7 @@ public class AuthService {
 				authorities.add(new SimpleGrantedAuthority(userObj.get(0).getRole().getTitle()));
 				log.info("Id= " + userObj.get(0).getId() + ", Name= " + userObj.get(0).getName() + ", Password= " + userObj.get(0).getPassword());
 				isValidUser = true;
-				if(userObj.get(0).getRole().getTitle().trim().equalsIgnoreCase("Manager")){
+				if(userObj.get(0).getRole().getTitle().trim().equalsIgnoreCase("Project Manager")){
 					isAdminUser = true;
 				}
 			}

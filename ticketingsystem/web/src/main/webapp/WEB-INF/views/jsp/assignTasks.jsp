@@ -30,15 +30,22 @@
 <jsp:include page="usermenu.jsp" />
 
 <%--<h2>${project.title}  Assign Task List</h2>--%>
+	<h2>List of Assign Tasks</h2>
 
 </hr>
 
 <table class="customizetable">
-	<th>PROJECT</th><th>TASK</th><th>DESCRIPTION</th><th>ASSIGNED HOURS</th><th>COMMENT</th><th>STATUS</th>
+	<th>PROJECT</th><th>TASK</th><th>DESCRIPTION</th><th>ASSIGNED HOURS</th><th>COMMENT</th><th>STATUS</th><th></th>
 	<tr>
 	</tr>
 	<%Integer userId = (Integer) session.getAttribute("id");%>
+	<c:choose>
+		<c:when test="${noTasks}">
+			<h2>Currently you're not assigned into any task.</h2>
+		</c:when>
+	</c:choose>
 	<c:forEach items="${tasks}" var="task">
+
 		<%! String status;%>
 		<%! String assignStatus;%>
 		<%! String bgcolor;%>

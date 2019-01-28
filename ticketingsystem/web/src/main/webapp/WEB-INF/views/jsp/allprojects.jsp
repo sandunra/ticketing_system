@@ -32,7 +32,7 @@
 
 	<h2>List of Projects</h2>
 	<table class="customizetable">
-		<th>ID</th><th>TITLE</th><th>DESCRIPTION</th><th>TYPE</th><th>CLIENT</th>
+		<th>ID</th><th>TITLE</th><th>DESCRIPTION</th><th>TYPE</th><th>CLIENT</th><th></th><th></th>
 		<tr>
 		</tr>
 		<c:forEach items="${projects}" var="project">
@@ -43,7 +43,7 @@
 				<td>${project.type}</td>
 				<td>${project.client}</td>&nbsp;&nbsp;&nbsp;
 				<td><a href="<c:url value='/project-${project.id}/task-list' />">View Task List</a></td>
-				<td><a href="<c:url value='/project/delete-${project.id}' />">delete</a></td>
+				<td><a href="<c:url value='/project/delete-${project.id}'  />" onclick="return confirm('Are you sure you want to delete this project?');">delete</a></td>
 			</tr>
 		</c:forEach>
 	</table>

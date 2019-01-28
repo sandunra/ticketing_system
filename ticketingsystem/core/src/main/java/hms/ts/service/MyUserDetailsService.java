@@ -31,7 +31,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
         // [USER,ADMIN,..]
         String role= userInfoDAO.findEmployeeByUsername(username).getRole().getTitle();
-        if(role.equalsIgnoreCase("manager")){
+        if(role.equalsIgnoreCase("project manager")){
             role = "ADMIN";
         }else{
             role = "USER";

@@ -1,3 +1,11 @@
+/*--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+--*/
+
+/* reset */
 
 html,
 body,
@@ -260,7 +268,7 @@ h1 span {
 
 .sub-main-w3 form {
     max-width: 600px;
-    margin: 0 2vw;
+    margin: 0 5vw;
     background: rgba(10, 10, 10, 0.44);
     padding: 3.5vw;
     box-sizing: border-box;
@@ -273,7 +281,7 @@ h1 span {
 }
 
 .form-style-agile {
-    margin-bottom: 1.2em;
+    margin-bottom: 1.5em;
     flex-basis: 100%;
     -webkit-flex-basis: 100%;
 }
@@ -283,7 +291,7 @@ h1 span {
     color: #fff;
     display: inline-block;
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     text-transform: capitalize;
     letter-spacing: 1px;
 }
@@ -316,7 +324,7 @@ h1 span {
     background: #03A9F4;
     border: none;
     padding: 13px 0;
-    margin-top: 25px;
+    margin-top: 30px;
     outline: none;
     width: 100%;
     font-size: 16px;
@@ -360,86 +368,6 @@ h1 span {
     font-size: 14px;
     letter-spacing: 1px;
     font-weight: 500;
-}
-
-.alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid snow;
-    border-radius: 4px;
-}
-.alert h4 {
-    margin-top: 0;
-    color: inherit;
-}
-.alert .alert-link {
-    font-weight: bold;
-}
-.alert > p,
-.alert > ul {
-    margin-bottom: 0;
-}
-.alert > p + p {
-    margin-top: 5px;
-}
-.alert-dismissable,
-.alert-dismissible {
-    padding-right: 35px;
-}
-.alert-dismissable .close,
-.alert-dismissible .close {
-    position: relative;
-    top: -2px;
-    right: -21px;
-    color: inherit;
-}
-.alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-}
-.alert-success hr {
-    border-top-color: #c9e2b3;
-}
-.alert-success .alert-link {
-    color: #2b542c;
-}
-.alert-info {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.alert-info hr {
-    border-top-color: #a6e1ec;
-}
-.alert-info .alert-link {
-    color: #245269;
-}
-.alert-warning {
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
-}
-.alert-warning hr {
-    border-top-color: #f7e1b5;
-}
-.alert-warning .alert-link {
-    color: #66512c;
-}
-.alert-danger {
-    color: #db1211;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-}
-
-.alert .alert-danger p{
-    color: #db1211;
-}
-.alert-danger hr {
-    border-top-color: #e4b9c0;
-}
-.alert-danger .alert-link {
-    color: #843534;
 }
 
 /*--placeholder-color--*/
@@ -623,7 +551,7 @@ h1 span {
 /*-- copyright --*/
 
 .footer {
-    margin: 1vw .1vw 2vw;
+    margin: 6vw .3vw 2vw;
 }
 
 .footer p {

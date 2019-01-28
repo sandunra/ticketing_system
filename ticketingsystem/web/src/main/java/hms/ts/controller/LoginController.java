@@ -24,10 +24,10 @@ public class LoginController extends HttpServlet {
 
 	@Autowired
 	private AuthService authenticateService;
+	// This will auto-inject the authentication service into the controller.
 
 	@Autowired
 	EmployeeService employeeService;
-	// This will auto-inject the authentication service into the controller.
 
 	public static final String isValidUser = "isValidUser";
 	public static final String isAdminUser = "isAdminUser";
@@ -57,7 +57,7 @@ public class LoginController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("username", username);
 			session.setAttribute("id", employeeService.findEmployeeByUsername(username).getId());
-			session.setMaxInactiveInterval(60); // 60 seconds
+			session.setMaxInactiveInterval(240); // 240 seconds
 
 			if(userTags.get(isAdminUser)){
 				isAdmin = true;
