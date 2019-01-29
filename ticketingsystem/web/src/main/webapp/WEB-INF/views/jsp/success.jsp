@@ -28,7 +28,8 @@
 		<jsp:include page="adminmenu.jsp" />
 	</c:otherwise>
 </c:choose>
-
+	<br/>
+	<br/>
 	message : ${success}
 	<br/>
 	<br/>

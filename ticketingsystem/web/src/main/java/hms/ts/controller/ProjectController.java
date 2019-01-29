@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +84,7 @@ public class ProjectController {
 	public String assignTask( @PathVariable Integer empId, @PathVariable Integer id, ModelMap model,
 							  @RequestParam("status") int status,
 							  @RequestParam("spentHours") int spentHours,
-							  @RequestParam("comment") String comment) {
+							  @RequestParam("comment") String comment, HttpServletRequest request, HttpServletResponse response) {
 
 		List<Task> tasks = employeeService.getAssignTasksList(empId);
 		if(tasks.size() == 0)
@@ -100,7 +102,7 @@ public class ProjectController {
 		task.setId(id);
 		task.setSpentHours(spentHours);
 		task.setStatus(status);
-		task.setComment(comment);
+		task.setComment(comment + " - (" + request.getSession().getAttribute("username") + ")");
 
 		taskService.UpdateTaskStatus(task);
 

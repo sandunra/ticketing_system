@@ -51,6 +51,8 @@ public class TaskController {
 	public String listProjectTasks(@PathVariable Integer id, ModelMap model) {
 
 		List<Task> tasks = projectService.getProjectTasks(id);
+		if(tasks.size() == 0)
+			model.addAttribute("noTasks", true);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("project", projectService.findProjectById(id));
 		model.addAttribute("admin", true);
@@ -128,7 +130,7 @@ public class TaskController {
 						     @RequestParam("assignedHours") int assignedHours,
 //						     @RequestParam("spentHours") int spentHours,
 //						     @RequestParam("status") int status,
-						     @RequestParam("comment") String comment) {
+						     @RequestParam("comment") String comment, HttpServletRequest request, HttpServletResponse response) {
 
 		Task task = new Task();
 		task.setId(taskId);
@@ -138,7 +140,7 @@ public class TaskController {
 //		task.setEmployee(employeeService.findEmployeeById(employeeId));
 		task.setAssignedHours(assignedHours);
 //		task.setSpentHours(spentHours);
-		task.setComment(comment);
+		task.setComment(comment + " - (" + request.getSession().getAttribute("username") + ")");
 //		task.setStatus(status);
 
 		taskService.updateTask(task);
@@ -187,12 +189,13 @@ public class TaskController {
 		String emailAddressTo = employeeService.findEmployeeById(employeeId).getEmail();
 		String msgSubject = taskService.findTaskById(taskId).getProject().getTitle() + " Project - task assigning";
 
-		String line1 = "<br><b>Project : </b>" +taskService.findTaskById(taskId).getProject().getTitle() + "<br><br>";
-		String line2 = "<b>Task : </b>" +taskService.findTaskById(taskId).getTitle() + "<br><br>";
-		String line3 = "<b>Description : </b>" +taskService.findTaskById(taskId).getDescription() + "<br><br>";
-		String line4 = "<b>Assign Hours :</b>" +taskService.findTaskById(taskId).getAssignedHours() + "<br><br>";
+		String line1 = "Dear " + employeeService.findEmployeeById(employeeId).getName() + ", You've been assigned below task.";
+		String line2 = "<br><b>Project : </b>" +taskService.findTaskById(taskId).getProject().getTitle() + "<br><br>";
+		String line3 = "<b>Task : </b>" +taskService.findTaskById(taskId).getTitle() + "<br><br>";
+		String line4 = "<b>Description : </b>" +taskService.findTaskById(taskId).getDescription() + "<br><br>";
+		String line5 = "<b>Assign Hours :</b>" +taskService.findTaskById(taskId).getAssignedHours() + "<br><br>";
 
-		String msgText = line1 + "\n <br>" + line2 + "\n &#10;" +line3 + System.lineSeparator() + line4 + "\n";
+		String msgText = line1 + "\n <br>" + line2 + "\n &#10;" +line3 + System.lineSeparator() + line4 + "\n" + line5 + "\n";
 
 		javaEmailSender.setUsername(employeeService.findEmployeeById(myId).getEmail());
 		javaEmailSender.setPassword(employeeService.findEmployeeById(myId).getPassword());

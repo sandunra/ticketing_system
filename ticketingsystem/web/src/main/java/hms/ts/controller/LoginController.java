@@ -57,7 +57,7 @@ public class LoginController extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("username", username);
 			session.setAttribute("id", employeeService.findEmployeeByUsername(username).getId());
-			session.setMaxInactiveInterval(240); // 240 seconds
+			session.setMaxInactiveInterval(600); // 600 seconds
 
 			if(userTags.get(isAdminUser)){
 				isAdmin = true;

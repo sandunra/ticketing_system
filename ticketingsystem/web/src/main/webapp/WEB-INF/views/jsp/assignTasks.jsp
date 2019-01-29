@@ -38,12 +38,15 @@
 	<th>PROJECT</th><th>TASK</th><th>DESCRIPTION</th><th>ASSIGNED HOURS</th><th>COMMENT</th><th>STATUS</th><th></th>
 	<tr>
 	</tr>
+	<tr>
+		<c:choose>
+			<c:when test="${noTasks}">
+				<p>Currently you're not assigned into any task.</p>
+			</c:when>
+		</c:choose>
+	</tr>
 	<%Integer userId = (Integer) session.getAttribute("id");%>
-	<c:choose>
-		<c:when test="${noTasks}">
-			<h2>Currently you're not assigned into any task.</h2>
-		</c:when>
-	</c:choose>
+
 	<c:forEach items="${tasks}" var="task">
 
 		<%! String status;%>

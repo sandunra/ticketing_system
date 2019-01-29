@@ -34,9 +34,16 @@
 	</hr>
 
 	<table class="customizetable">
-		<th>TASK ID</th><th>TITLE</th><th>DESCRIPTION</th><th>ASSIGNED HOURS</th><th>ASSIGNEE</th><th>COMMENT</th><th>SPENT HOURS</th><th>STATUS</th>
+		<th>TASK ID</th><th>TITLE</th><th>DESCRIPTION</th><th>ASSIGNED HOURS</th><th>ASSIGNEE</th><th>COMMENT</th><th>SPENT HOURS</th><th>STATUS</th><th></th><th></th>
 		<tr>
 		</tr>
+
+		<c:choose>
+			<c:when test="${noTasks}">
+				<p>Tere is no any task related with ${project.title} project.</p>
+			</c:when>
+		</c:choose>
+
 		<c:forEach items="${tasks}" var="task">
 			<%! String status;%>
 			<%! String assignStatus;%>
@@ -97,7 +104,9 @@
 				</td>
 				<td>
 					<div class="my_content_container">
-						<a href="<c:url value='/project-${project.id}/task-${task.id}/delete' />" onclick="return confirm('Are you sure you want to delete this task?');">delete</a>
+						<div class="red">
+							<a href="<c:url value='/project-${project.id}/task-${task.id}/delete' />" onclick="return confirm('Are you sure you want to delete this task?');">delete</a>
+						</div>
 					</div>
 				</td>
 
