@@ -24,19 +24,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public void saveEmployee(Employee employee) {
 		dao.saveEmployee(employee);
-
-		/*Employee entity = dao.findById(employee.getId());
-		if(entity!=null){
-			entity.setName(employee.getName());
-			entity.setEmail(employee.getEmail());
-			entity.setPassword(employee.getPassword());
-			entity.setUsername(employee.getUsername());
-			entity.setRole(employee.getRole());
-		}
-
-		dao.saveEmployee(entity);*/
-
-
 	}
 
 	/*
@@ -107,7 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		role.put(5, "Associate Software Engineer");
 		role.put(6, "Trainee Software Engineer");
 		role.put(7, "Marketing Officer");
-		roleList.put("countryList", role);
+		roleList.put("roleList", role);
 		return roleList;
 	}*/
 	

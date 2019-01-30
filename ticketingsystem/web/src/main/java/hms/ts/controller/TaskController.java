@@ -207,6 +207,60 @@ public class TaskController {
 		model.addAttribute("success", "Task :" + task.getTitle()	+ " assigned to " +employeeService.findEmployeeById(employeeId).getName() + " successfully. <br> Email has been sent to " +employeeService.findEmployeeById(employeeId).getName() + " including task details.");
 		return "success";
 	}
+
+	@RequestMapping(value = { "project-{projectId}/task-{taskId}/reverse-assign" }, method = RequestMethod.GET)
+	public String reverseAssignTask(@PathVariable Integer projectId, @PathVariable Integer taskId, ModelMap model) {
+		List<Task> tasks = projectService.getProjectTasks(projectId);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("project", projectService.findProjectById(projectId));
+		Task task = taskService.findTaskById(taskId);
+		model.addAttribute("task", task);
+		model.addAttribute("error", false);
+		model.addAttribute("showreversepopup", true);
+		return "projectTasks";
+	}
+
+	@RequestMapping(value = { "project-{projectId}/task-{taskId}/reverse-assign" }, method = RequestMethod.POST)
+	public String reverseAssignTask( @PathVariable Integer projectId, @PathVariable Integer taskId, ModelMap model,
+							  @RequestParam("reason") String reason, HttpServletRequest request, HttpServletResponse response) {
+
+		int myId = (int)request.getSession().getAttribute("id");
+		List<Task> tasks = projectService.getProjectTasks(projectId);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("project", projectService.findProjectById(projectId));
+		Task task = taskService.findTaskById(taskId);
+		model.addAttribute("task", task);
+		model.addAttribute("showreversepopup", true);
+
+		int currentAssigneeId = task.getEmployee().getId();
+
+		task.setId(taskId);
+		task.setEmployee(null);
+		task.setStatus(1);
+
+		taskService.assignAndUpdateTask(task);
+
+		String emailAddressTo = employeeService.findEmployeeById(currentAssigneeId).getEmail();
+		String msgSubject = taskService.findTaskById(taskId).getProject().getTitle() + " Project - task reverse assigning";
+
+		String line1 = "Dear " + employeeService.findEmployeeById(currentAssigneeId).getName() + ", Below mentioned task is reverse assigned from you.";
+		String line2 = "<br><b>Project : </b>" +taskService.findTaskById(taskId).getProject().getTitle() + "<br><br>";
+		String line3 = "<b>Task : </b>" +taskService.findTaskById(taskId).getTitle() + "<br><br>";
+		String line4 = "<b>Reason to Reverse Assign : </b><br>" +reason + "<br><br>";
+		String line5 = "Thank you so much for your contribution. Sorry if any inconvenience caused. <br><br>";
+
+		String msgText = line1 + "\n <br>" + line2 + "\n &#10;" +line3 + System.lineSeparator() + line4 + "\n" + line5 + "\n";
+
+		javaEmailSender.setUsername(employeeService.findEmployeeById(myId).getEmail());
+		javaEmailSender.setPassword(employeeService.findEmployeeById(myId).getPassword());
+		javaEmailSender.setFromAddress(employeeService.findEmployeeById(myId).getEmail());
+		javaEmailSender.createAndSendEmail(emailAddressTo, msgSubject, msgText);
+
+		model.addAttribute("id", task.getProject().getId());
+		model.addAttribute("task", true);
+		model.addAttribute("success", "Task :" + task.getTitle()	+ " reverse assigned from " +employeeService.findEmployeeById(currentAssigneeId).getName() + " successfully. <br> Email has been sent to " +employeeService.findEmployeeById(currentAssigneeId).getName() + " including details.");
+		return "success";
+	}
 	
 	/*
 	 * This method will delete an employee by it's id value.

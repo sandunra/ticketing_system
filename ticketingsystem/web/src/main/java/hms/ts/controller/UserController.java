@@ -47,11 +47,12 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
-	public String saveEmployee(@Valid Employee employee, BindingResult result, @RequestParam("name") String name,
-						   @RequestParam("email") String email,
-						   @RequestParam("role.id") int roleId,
-						   @RequestParam("username") String username,
-						   @RequestParam("password") String password, ModelMap model) {
+	public String saveEmployee(@Valid Employee employee, BindingResult result,
+							   @RequestParam("name") String name,
+							   @RequestParam("email") String email,
+							   @RequestParam("role.id") int roleId,
+							   @RequestParam("username") String username,
+							   @RequestParam("password") String password, ModelMap model) {
 
 		if(roleId == 0){
 			FieldError roleError =new FieldError("employee","role","*Employee role need to select here.");

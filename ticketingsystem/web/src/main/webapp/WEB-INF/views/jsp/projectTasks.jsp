@@ -25,6 +25,17 @@
 	}
 </script>
 
+<script>
+
+	if(${showreversepopup}){
+		window.onload = function() {
+			document.getElementById("reverseAssignTaskForm").style.display = "block";
+			if(${error})
+				document.getElementById("reasonError").style.display = "block";
+		}
+	}
+</script>
+
 <body>
 <div class="bg-img">
 <jsp:include page="adminmenu.jsp" />
@@ -96,7 +107,15 @@
 				<td>
 					<div class="my_content_container" id="assign">
 						<div class="<%=bgcolor%>">
-							<a href="<c:url value='/project-${project.id}/task-${task.id}/assign' />"><%=assignStatus%></a>
+
+							<c:choose>
+								<c:when test="${task.status==2 || task.status==3 }">
+									<a href="<c:url value='/project-${project.id}/task-${task.id}/reverse-assign' />"><%=assignStatus%></a>
+								</c:when>
+								<c:otherwise>
+									<a href="<c:url value='/project-${project.id}/task-${task.id}/assign' />"><%=assignStatus%></a>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 						<%--<button class="open-button" onclick="openForm( ${task.id} , ${task.assignedHours})">Assign Task
@@ -141,6 +160,23 @@
 		</form>
 	</div>
 
+	<div class="form-popup" id="reverseAssignTaskForm" style="display: none">
+
+		<form id="formReverseAssignTask" modelAttribute="task" class="form-container" method="post" role="form">
+			<input type="hidden" path="id" name = "id" id="taskId"/>
+			<label for="reason">Reason to Reverse Assign Task</label>
+			<textarea id="reason" name="reason" class="form-container" required="required" style="min-height: 100px;"></textarea>
+			<div id="reasonError" style="display: none; color: #ff0000">
+				*Please mention the reason for reverse assign task..
+			</div>
+
+			</br>
+
+			<button type="submit" class="btn" onsubmit="validate()">Reverse Assign Task</button>
+			<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+		</form>
+	</div>
+
 	<script>
 		function openForm(taskId, assignedHours) {
 			document.getElementById("myForm").style.display = "block";
@@ -150,6 +186,7 @@
 
 		function closeForm() {
 			document.getElementById("myForm").style.display = "none";
+			document.getElementById("reverseAssignTaskForm").style.display = "none";
 			document.getElementById("myForm").onmouseout= false;
 		}
 

@@ -8,7 +8,7 @@
 	<!-- Meta tag Keywords -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8" />
-	<meta name="keywords" content="Ticketing System,BeyondM, Task Assigning System , Hsenid Mobile Solutions,Employee Managemen,Spring MVC,Hibernate,News letter Forms,Elements"
+	<meta name="keywords" content="Ticketing System, Task Management System, Task Assigning System , Employee Management, Spring MVC,Hibernate,News letter Forms,Elements"
 			/>
 	<script>
 		addEventListener("load", function () {
